@@ -1,0 +1,30 @@
+# Copyright (c) 2015-present, Facebook, Inc.
+# All rights reserved.
+# Adapted to tecorigin hardware。
+import argparse
+
+
+def get_args_parser():
+    parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
+    parser.add_argument('--img_size', default=224, type=int,
+                        help='Image size to which input images should be scaled.')
+    parser.add_argument('--batch_size', default=16, type=int,
+                        help='Batch Size for training.')
+    parser.add_argument('--lr', default=0.0002, type=float,
+                        help='Learning rate for training model.')
+    parser.add_argument('--epochs', default=100, type=int,
+                        help='Epoch number for training model.')
+    parser.add_argument('--output', default="../my_saved_models/attention/", type=str,
+                        help='Where to output all stuff')
+    parser.add_argument('--num_heads', default=4, type=int,
+                        help='Number of heads in attention layers.')
+    parser.add_argument('--name', default="", type=str,
+                        help='Add a name ending to saved model and log file.')
+    args = parser.parse_args()
+    
+    return parser
+    
+
+
+if __name__ == "__main__":
+    sys.exit(0)
