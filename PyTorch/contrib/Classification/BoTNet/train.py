@@ -10,7 +10,7 @@ from torchvision.datasets import ImageFolder
 from torch.utils.data import DataLoader
 import csv
 import os
-import time  # 添加时间模块以计算 IPS
+import time
 from torch.cuda.amp import GradScaler, autocast
 from BoTNet_Model import resnet50
 
@@ -59,7 +59,7 @@ def prepare_data(img_size, batch_size):
     
     return train_loader, valid_loader
 
-def run_training(train_loader, valid_loader, lr, epochs, output, num_heads, img_size, name):
+def run_training(train_loader, valid_loader, lr, epochs, output, num_heads, img_size, name, time_str, num_steps):
     print("Setup model..")
     model = resnet50(num_classes=CLASSES, attention=[False, False, False, True], num_heads=num_heads, image_size=img_size)
     
@@ -73,15 +73,15 @@ def run_training(train_loader, valid_loader, lr, epochs, output, num_heads, img_
     criterion = torch.nn.CrossEntropyLoss()
     scheduler = ReduceLROnPlateau(optimizer, mode='max', factor=0.5, patience=10, min_lr=1e-8, threshold=0.001)
     
-    csv_file = '/BoTNet/BoTNet.csv'
+    csv_file = os.path.join(output, "BoTNet.csv") 
     os.makedirs(output, exist_ok=True)
-    model_path = os.path.join(output, f'imagenette{TIME}_BotNet_{name}.pth')
+    model_path = os.path.join(output, f'imagenette{time_str}_BotNet_{name}.pth')
     
     with open(csv_file, 'a', newline='') as f:
         writer = csv.writer(f)
         if os.path.getsize(csv_file) == 0:
             writer.writerow(['epoch', 'train_loss', 'valid_loss', 'accuracy'])
-    
+    i = 0
     step = 0
     best_acc = 0.0
     scaler = torch.sdaa.amp.GradScaler()
@@ -89,11 +89,10 @@ def run_training(train_loader, valid_loader, lr, epochs, output, num_heads, img_
     for epoch in range(epochs):
         model.train()
         train_loss = 0.0
-        for i, (inputs, labels) in enumerate(train_loader, 1):  # i 从 1 开始计数
+        for i, (inputs, labels) in enumerate(train_loader, 1):
             inputs, labels = inputs.to(device), labels.to(device)
             optimizer.zero_grad()
             
-            # 记录开始时间
             start_time = time.time()
             
             with torch.sdaa.amp.autocast():
@@ -104,16 +103,11 @@ def run_training(train_loader, valid_loader, lr, epochs, output, num_heads, img_
             scaler.step(optimizer)
             scaler.update()
             
-            # 计算 IPS（每秒处理的图片数）
             batch_time = time.time() - start_time
             ips = inputs.size(0) / batch_time if batch_time > 0 else 0
             
             train_loss += loss.item() * inputs.size(0)
             
-            # 打印当前 iteration 的 loss
-            # print(f'Epoch {epoch+1}/{epochs}, Iteration {i}/{len(train_loader)}, Loss: {loss.item():.4f}')
-            
-            # 使用 logger 输出指定格式
             current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
             log_message = (
                 f"TCAPPDLL {current_time} - Epoch: {epoch+1} Iteration: {i}  "
@@ -128,6 +122,10 @@ def run_training(train_loader, valid_loader, lr, epochs, output, num_heads, img_
                 },
                 verbosity=Verbosity.DEFAULT,
             )
+            # print("i",i)
+            if(i==num_steps):
+                return
+            i += 1
 
         train_loss /= len(train_loader.dataset)
         
@@ -171,23 +169,26 @@ def main():
                         help='Learning rate for training model.')
     parser.add_argument('--epochs', default=100, type=int,
                         help='Epoch number for training model.')
-    parser.add_argument('--output', default="../my_saved_models/attention/", type=str,
+    parser.add_argument('--output', default="./", type=str,
                         help='Where to output all stuff')
     parser.add_argument('--num_heads', default=4, type=int,
                         help='Number of heads in attention layers.')
     parser.add_argument('--name', default="", type=str,
                         help='Add a name ending to saved model and log file.')
+    parser.add_argument('--num_steps', default=100, type=int,
+                        help='train iteration limits')
+    parser.add_argument('--time', default="", type=str,
+                        help='Timestamp for model and log file naming.')
     args = parser.parse_args()
     
     print(args)
-    global TIME
-    TIME = str(datetime.datetime.now())[:-7].replace(" ", "_")
-    print("Starting at " + TIME)
+    time_str = args.time if args.time else str(datetime.datetime.now())[:-7].replace(" ", "_")
+    print("Starting at " + time_str)
 
     train_loader, valid_loader = prepare_data(args.img_size, args.batch_size)
     print("Prepared Data")
     
-    run_training(train_loader, valid_loader, args.lr, args.epochs, args.output, args.num_heads, args.img_size, args.name)
+    run_training(train_loader, valid_loader, args.lr, args.epochs, args.output, args.num_heads, args.img_size, args.name, time_str, args.num_steps)
 
 if __name__ == '__main__':
     main()

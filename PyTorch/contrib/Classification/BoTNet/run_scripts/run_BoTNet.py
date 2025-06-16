@@ -25,29 +25,28 @@
 # OF SUCH DAMAGE.
 
 from argument import get_args_parser
-import os
 import argparse
 from pathlib import Path
+import subprocess
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser('BoTNet training and evaluation script', parents=[get_args_parser()], add_help=False)
     args = parser.parse_args()
-    if args.output_dir:
-        Path(args.output_dir).mkdir(parents=True, exist_ok=True)
+    if args.output:
+        Path(args.output).mkdir(parents=True, exist_ok=True)
 
-    os.chdir("..")
-    cmd = f"python train.py \
-        --img_size {args.img_size} \
-        --batch_size {args.batch_size} \
-        --lr {args.lr} \
-        ---epochs {args.epochs} \
-        --output {args.output} \
-        --num_heads {args.num_heads} \
-        --name {args.name}"
-
-    import subprocess
     try:
-        subprocess.check_call(cmd, shell=True)
+        subprocess.check_call([
+            "python", "../train.py",
+            "--img_size", str(args.img_size),
+            "--batch_size", str(args.batch_size),
+            "--lr", str(args.lr),
+            "--epochs", str(args.epochs),
+            "--output", args.output,
+            "--num_heads", str(args.num_heads),
+            "--name", args.name,
+            "--num_steps", str(args.num_steps)
+        ])
     except subprocess.CalledProcessError as e:
         exit_code = e.returncode
         print("Command failed with exit code:", exit_code)
