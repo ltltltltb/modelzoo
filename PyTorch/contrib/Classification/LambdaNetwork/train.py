@@ -9,7 +9,7 @@ from preprocess import load_data
 from model import LambdaResNet18, get_n_params
 
 import torch_sdaa
-from torch.sdaa import amp
+# from torch.sdaa import amp
 
 import datetime
 import time  # 添加时间模块以计算 IPS
@@ -51,7 +51,7 @@ def _train(epoch, train_loader, model, optimizer, criterion, args):
     losses = 0.
     acc = 0.
     total = 0.
-    scaler = torch.sdaa.amp.GradScaler()
+    # scaler = torch.sdaa.amp.GradScaler()
     
     for idx, (data, target) in enumerate(train_loader):
         if args.cuda:
@@ -62,16 +62,15 @@ def _train(epoch, train_loader, model, optimizer, criterion, args):
         acc += pred.eq(target).sum().item()
         total += target.size(0)
 
+        optimizer.zero_grad()
+
         # 记录开始时间
         start_time = time.time()
-
-        optimizer.zero_grad()
         
         loss = criterion(output, target)
-        
         losses += loss
-        loss.backward()
         
+        loss.backward()
         if args.gradient_clip > 0:
             torch.nn.utils.clip_grad_norm_(model.parameters(), args.gradient_clip)
         optimizer.step()
@@ -106,6 +105,8 @@ def _train(epoch, train_loader, model, optimizer, criterion, args):
                                                                                                  acc / total * 100.,
                                                                                                  acc, total))
         i += 1
+        # print("i is :",i)
+        # print("args.num_step:",args.num_steps)
         if(i== args.num_steps):
             break
 
@@ -150,7 +151,7 @@ def main(args):
 
     if not args.evaluation:
         criterion = nn.CrossEntropyLoss()
-        lr_scheduler = optim.lr_scheduler.CosineAnnealingWarmRestarts(optimizer, T_0=10, T_mult=2, eta_min=0.0001)
+        # lr_scheduler = optim.lr_scheduler.CosineAnnealingWarmRestarts(optimizer, T_0=10, T_mult=2, eta_min=0.0001)
 
         global_acc = 0.
         for epoch in range(start_epoch, args.epochs + 1):
@@ -160,8 +161,8 @@ def main(args):
                 global_acc = best_acc
                 save_checkpoint(best_acc, model, optimizer, args, epoch)
 
-            lr_scheduler.step()
-            print('Current Learning Rate: {}'.format(lr_scheduler.get_last_lr()))
+            # lr_scheduler.step()
+            # print('Current Learning Rate: {}'.format(lr_scheduler.get_last_lr()))
     else:
         _eval(start_epoch, test_loader, model, args)
 

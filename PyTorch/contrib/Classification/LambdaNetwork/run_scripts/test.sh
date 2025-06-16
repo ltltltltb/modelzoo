@@ -17,7 +17,7 @@ data_path="/data/teco-data/cifar10"
 
 #示例1: python run_resnet.py --nproc_per_node 4 --model_name resnet50 --epoch 1 --batch_size 32 --device sdaa --step 100 --datasets $dataset 2>&1 | tee sdaa.log
 #由于demo无需下载数据集及数据集太小所以未做step适配，正常场景参考示例1即可
-python run_LambdaNetwork.py --batch_size 128 --num_workers 4 --lr 0.05 --epoch 1 --num_steps 100 --device_num 1 2>&1 | tee sdaa.log
-
+# run_LambdaNetwork.py中的args.param是这样的： --batch_size 128 --num_workers 4 --lr 0.002 --epochs 1 --num_steps 100 --device_num 1 2>&1 | tee sdaa.log
+python run_LambdaNetwork.py  2>&1 | tee sdaa.log
 #生成loss对比图
 python loss.py --sdaa-log sdaa.log --cuda-log cuda.log

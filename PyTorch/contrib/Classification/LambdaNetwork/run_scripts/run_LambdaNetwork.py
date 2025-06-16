@@ -32,8 +32,7 @@ if __name__ == "__main__":
 
     os.chdir("..")
     cmd = (
-        f"python train.py --batch_size {args.batch_size} --num_workers {args.num_workers} --lr {args.lr}"
-        f"--epoch {args.epoch} --num_steps {args.num_steps} --num_steps {args.num_steps} --device_num {args.device_num } "
+        f"python train.py --batch_size 128 --num_workers 4 --lr 0.01 --epochs 1 --num_steps 100 --device_num 1"
     )
 
 

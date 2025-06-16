@@ -1,3 +1,6 @@
 torch
 torchvision
-git+https://github.com/Tecorigin/tcap_dllogger.git
+numpy
+matplotlib
+scipy
+git+https://gitee.com/xiwei777/tcap_dllogger.git
