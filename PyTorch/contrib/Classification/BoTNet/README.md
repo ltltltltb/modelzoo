@@ -1,9 +1,9 @@
-# Big_Transfer_ResNetV2(BiT)
+# Bottleneck Transformers for Visual Recognition
 
 ## 1. 模型概述
-Big_Transfer_ResNetV2(BiT) 是一种通用视觉表示学习方法，来自 Google Research 的论文 *[Big Transfer (BiT): General Visual Representation Learning](https://arxiv.org/abs/1912.11370)*，由 Alexander Kolesnikov 等人在 2019 年发表。BiT 模型在 [ILSVRC-2012](http://www.image-net.org/challenges/LSVRC/2012/) 和 [ImageNet-21k](http://www.image-net.org/) 数据集上进行预训练，支持在多个深度学习框架（如 TensorFlow 2、PyTorch 和 Jax/Flax）上进行微调。原始代码仓库位于 [https://github.com/google-research/big_transfer](https://github.com/google-research/big_transfer)。
+BoTNet 是一种结合卷积神经网络（CNN）和Transformer的混合架构，来自论文 Bottleneck Transformers for Visual Recognition，由 Aravind Srinivas 等人在 2021 年发表。BoTNet 模型通过在 ResNet 架构中引入 Multi-Head Self-Attention（MHSA）模块，增强了对全局上下文的建模能力，适用于图像分类、目标检测等视觉任务。原始代码仓库位于 https://github.com/facebookresearch/ClassyVision（部分实现参考）。
 
-本项目适配了 BiT 模型，提供在 PyTorch 框架下的训练和微调支持，适用于分类任务等场景。有关知识蒸馏的更新模型（BiT-R50x1 蒸馏自 BiT-M-R152x2）可参考论文 *[Knowledge distillation: A good teacher is patient and consistent](https://arxiv.org/abs/2106.05237)*。
+本项目适配了 BoTNet 模型，提供在 PyTorch 框架下的训练和微调支持，适用于多种视觉任务场景。模型在 ILSVRC-2012 和 ImageNet-21k 数据集上进行预训练，支持在 PyTorch 框架下进行高效微调。
 
 ## 2. 快速开始
 使用 BoTNet 模型执行训练的主要流程如下：
@@ -17,7 +17,7 @@ Big_Transfer_ResNetV2(BiT) 是一种通用视觉表示学习方法，来自 Goog
 
 ### 2.2 准备数据集
 #### 2.2.1 获取数据集
-BiT  使用 ImageNette2-320 数据集，该数据集为开源数据集，可从 [ImageNette2-320](https://github.com/fastai/imagenette) 下载。
+BoTNet  使用 ImageNette2-320 数据集，该数据集为开源数据集，可从 [ImageNette2-320](https://github.com/fastai/imagenette) 下载。
 
 #### 2.2.2 处理数据集
 具体配置方式可参考：https://github.com/fastai/imagenette/README.md
@@ -42,13 +42,7 @@ cd <ModelZoo_path>/PyTorch/contrib/Classification/BoTNet/run_scripts
 ```
 2. 运行训练. 该模型支持单机单卡。
 ```shell
-python run_BoTNet.py --img_size 224 \
-        --batch_size 16 \
-        --lr 0.0002 \
-        ---epochs 100 \
-        --output "" \
-        --num_heads 4 \
-        --name "BoTNet" \
+python run_BoTNet.py 
 ```
 更多训练参数参考 run_scripts/argument.py
 
