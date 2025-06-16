@@ -23,126 +23,25 @@
 # STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)  ARISING IN ANY
 # WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 # OF SUCH DAMAGE.
-import re
-from typing import List
 
-import matplotlib.pyplot as plt
-import numpy as np
-from scipy.signal import savgol_filter
-
-
-def compare_loss(benchmark_loss_array, sdaa_loss_array):
-    def MeanRelativeError(cuda_loss, sdaa_loss):
-        return ((sdaa_loss - cuda_loss) / cuda_loss).mean()
-
-    def MeanAbsoluteError(cuda_loss, sdaa_loss):
-        return (sdaa_loss - cuda_loss).mean()
-
-    benchmark_mean_loss = benchmark_loss_array
-    sdaa_mean_loss = sdaa_loss_array
-
-    benchmark_compare_loss = benchmark_mean_loss
-    sdaa_compare_loss = sdaa_mean_loss
-    mean_relative_error = MeanRelativeError(benchmark_compare_loss, sdaa_compare_loss)
-    mean_absolute_error = MeanAbsoluteError(benchmark_compare_loss, sdaa_compare_loss)
-
-    print("MeanRelativeError:", mean_relative_error)
-    print("MeanAbsoluteError:", mean_absolute_error)
-
-    if mean_relative_error <= mean_absolute_error:
-        print("Rule,mean_relative_error", mean_relative_error)
-    else:
-        print("Rule,mean_absolute_error", mean_absolute_error)
-
-    print_str = f"{mean_relative_error=} <= 0.05 or {mean_absolute_error=} <= 0.0002"
-    if mean_relative_error <= 0.05 or mean_absolute_error <= 0.0002:
-        print("pass", print_str)
-        return True, print_str
-    else:
-        print("fail", print_str)
-        return False, print_str
-
-
-def parse_string(string):
-    # 匹配 [step X (Y/4)]: loss=Z 格式
-    pattern = r"\[step \d+ \(\d+/\d+\)\]: loss=([\d\.e-]+)"
-    match = re.findall(pattern, string)
-    print("xxxxx", match)
-    return match
-
-
-# def parse_string(string):
-#     # 提取 data 字段的 JSON 字符串
-#     pattern = r'"data": "({.*?})"'
-#     # 解析 JSON
-#     data_match: List[str] = re.findall(pattern, string)
-
-#     result = []
-#     for data_str in data_match:
-#         # 提取 rank
-#         rank = re.search(r"'rank':\s*'([^']+)'", data_str).group(1)
-#         # 提取 loss 值
-#         loss_value = re.search(r"tensor\(([0-9.]+)", data_str).group(1)
-
-#         rank = int(rank)
-#         if rank == -1 or rank == 0:
-#             result.append(float(loss_value))
-
-#     return result
-
-
-def parse_loss(ret_list):
-    step_num = len(ret_list)
-    loss_arr = np.zeros(shape=(step_num,))
-    i = 0
-    for loss in ret_list:
-        loss = float(loss)
-        loss_arr[i] = loss
-        i += 1
-        if i >= step_num:
-            break
-    print(loss_arr)
-    return loss_arr
-
-
-def plot_loss(sdaa_loss, a100_loss):
-    fig, ax = plt.subplots(figsize=(12, 6))
-
-    smoothed_losses = savgol_filter(sdaa_loss, 5, 1)
-    x = list(range(len(sdaa_loss)))
-    ax.plot(x, smoothed_losses, label="sdaa_loss")
-
-    smoothed_losses = savgol_filter(a100_loss, 5, 1)
-    x = list(range(len(a100_loss)))
-    ax.plot(x, smoothed_losses, "--", label="cuda_loss")
-
-    ax.set_xlabel("Iteration")
-    ax.set_ylabel("Loss")
-    ax.set_title("Model Training Loss Curves (Smoothed)")
-    ax.legend()
-    plt.savefig("loss.jpg")
-
+from argument import *
+import os
+import argparse
+from pathlib import Path
 
 if __name__ == "__main__":
-    from argparse import ArgumentParser
+    from argument import argparser
+    from argument import KNOWN_MODELS
+    print("test1...")
+    parser = argparser(KNOWN_MODELS.keys())
 
-    parser = ArgumentParser(description="modelzoo")
-    parser.add_argument("--sdaa-log", type=str, default="sdaa.log")
-    parser.add_argument("--cuda-log", type=str, default="cuda.log")
-    args = parser.parse_args()
+    os.chdir("..")
+    cmd = f"python3 -m train --name imagenet_`date +%F_%H%M%S` --model BiT-M-R50x1 --logdir /tmp/bit_logs --dataset imagenet2012 --datadir /data/teco-data/imagenet --batch 4 --base_lr 0.00025 --workers 8 --eval_every 100 --batch_split 4"
 
-    sdaa_log = args.sdaa_log
-    with open(sdaa_log, "r") as f:
-        s = f.read()
-    sdaa_res = parse_string(s)
-
-    a100_log = args.cuda_log
-    with open(a100_log, "r") as f:
-        s = f.read()
-    a100_res = parse_string(s)
-    length = min(len(a100_res), len(sdaa_res))
-    print(length)
-    sdaa_loss = parse_loss(sdaa_res[:length])
-    a100_loss = parse_loss(a100_res[:length])
-    compare_loss(a100_loss, sdaa_loss)  # 比较loss
-    plot_loss(sdaa_loss, a100_loss)  # 对比loss曲线图
+    import subprocess
+    try:
+        subprocess.check_call(cmd, shell=True)
+    except subprocess.CalledProcessError as e:
+        exit_code = e.returncode
+        print("Command failed with exit code:", exit_code)
+        exit(exit_code)

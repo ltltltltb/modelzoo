@@ -27,12 +27,17 @@ BiT  使用 ImageNet 数据集，该数据集为开源数据集，可从 [ImageN
 所使用的环境下已经包含 PyTorch 框架虚拟环境
 1. 执行以下命令，启动虚拟环境. 
 ```
-conda activate torch_env
+conda activate torch_env_py310
 ```
 
 2. 安装python依赖
 ```
 pip install -r requirements.txt
+```
+
+3. 下载BiT-M-R50x1.npz
+```
+wget https://storage.googleapis.com/bit_models/BiT-M-R50x1.npz
 ```
 
 ### 2.4 启动训练
@@ -42,7 +47,7 @@ cd <ModelZoo_path>/PyTorch/contrib/Classification/Big_Transfer_ResNetV2(BiT)/run
 ```
 2. 运行训练. 该模型支持单机单卡。
 ```shell
-python3 -m bit_pytorch.train \
+python3 -m train \
 --name imagenet_`date +%F_%H%M%S` \
 --model BiT-M-R50x1 \
 --logdir /tmp/bit_logs \

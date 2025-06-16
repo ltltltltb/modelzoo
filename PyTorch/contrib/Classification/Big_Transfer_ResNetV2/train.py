@@ -23,18 +23,29 @@ import numpy as np
 import torch
 import torchvision as tv
 
-import bit_pytorch.fewshot as fs
-import bit_pytorch.lbtoolbox as lb
-import bit_pytorch.models as models
+import fewshot as fs
+import lbtoolbox as lb
+import models as models
 
 import bit_common
 import bit_hyperrule
 
+import os
 # sdaa依赖
 import torch_sdaa
 from torch.sdaa import amp              # 导入AMP
+
 scaler = torch.sdaa.amp.GradScaler()    # 定义GradScaler
 
+# teco_logger
+from tcap_dllogger import Logger, StdOutBackend,    JSONStreamBackend, Verbosity
+
+json_logger = Logger(
+    [
+        StdOutBackend(Verbosity.DEFAULT),
+        JSONStreamBackend(Verbosity.VERBOSE,    'dlloger_example.json'),
+    ]
+)
 
 def topk(output, target, ks=(1,)):
   """Returns one boolean vector for each k, whether the target is within the output's top-k."""
@@ -161,6 +172,9 @@ def mixup_criterion(criterion, pred, y_a, y_b, l):
 
 
 def main(args):
+  json_logger.metadata("train.loss", {"unit": "", "GOAL":    "MINIMIZE", "STAGE": "TRAIN"})
+  json_logger.metadata("train.ips",{"unit": "imgs/s",    "format": ":.3f", "GOAL": "MAXIMIZE", "STAGE": "TRAIN"})
+
   logger = bit_common.setup_logger(args)
 
   # Lets cuDNN benchmark conv implementations and choose the fastest.
@@ -216,19 +230,13 @@ def main(args):
   mixup_l = np.random.beta(mixup, mixup) if mixup > 0 else 1
   end = time.time()
 
+  micro_batch_size = args.batch // args.batch_split
   with lb.Uninterrupt() as u:
     for x, y in recycle(train_loader):
-      '''
-      # enable AMP
-      x, y = x.to(device).to(memory_format=torch.channels_last), y.to(device) 
-      with torch.sdaa.amp.autocast():   # 开启AMP环境
-          outputs = model(x)    
-          loss = loss_func(outputs, y) 
-      optimizer.zero_grad()
-      scaler.scale(loss).backward()    # loss缩放并反向转播
-      scaler.step(optimizer)    # 参数更新
-      scaler.update()    # 基于动态Loss Scale更新loss_scaling系数
-      '''
+    # 达到 100 次迭代后退出
+      if step >= 100:  
+        break
+
       # measure data loading time, which is spent in the `for` statement.
       chrono._done("load", time.time() - end)
 
@@ -263,16 +271,33 @@ def main(args):
         (c / args.batch_split).backward()
         accum_steps += 1
 
-      accstep = f" ({accum_steps}/{args.batch_split})" if args.batch_split > 1 else ""
-      logger.info(f"[step {step}{accstep}]: loss={c_num:.5f} (lr={lr:.1e})")  # pylint: disable=logging-format-interpolation
-      logger.flush()
+      # 原代码的logger
+      # accstep = f" ({accum_steps}/{args.batch_split})" if args.batch_split > 1 else ""
+      # logger.info(f"[step {step}{accstep}]: loss={c_num:.5f} (lr={lr:.1e})")  # pylint: disable=logging-format-interpolation
+      # logger.flush()
 
+      # 计算 train.ips
+      iteration_time = time.time() - end
+      train_ips = micro_batch_size / iteration_time if iteration_time > 0 else 0
+
+      # 输出训练日志
+      json_logger.log(
+          step=(step, 4*step + accum_steps),  # 我的理解：step即iteration，一轮epoch有四个step
+          data={
+              "rank": os.environ.get("LOCAL_RANK", 0),
+              "train.loss": c_num,
+              "train.ips": train_ips,
+          },
+          verbosity=Verbosity.DEFAULT,
+      )
+      json_logger.flush()
+      step += 1
+        
       # Update params
       if accum_steps == args.batch_split:
         with chrono.measure("update"):
           optim.step()
           optim.zero_grad()
-        step += 1
         accum_steps = 0
         # Sample new mixup ratio for next batch
         mixup_l = np.random.beta(mixup, mixup) if mixup > 0 else 1

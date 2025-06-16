@@ -24,37 +24,65 @@
 # WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 # OF SUCH DAMAGE.
 import argparse
+from collections import OrderedDict
 
-def parse_args():
-    parser = argparse.ArgumentParser()
+def argparser(known_models):
+    parser = argparse.ArgumentParser(description="Fine-tune BiT-M model.")
+    parser.add_argument("--name", required=True,
+                      help="Name of this run. Used for monitoring and checkpointing.")
+    parser.add_argument("--model", choices=list(known_models),
+                      help="Which variant to use; BiT-M gives best results.")
+    parser.add_argument("--logdir", required=True,
+                      help="Where to log training info (small).")
+    parser.add_argument("--bit_pretrained_dir", default='.',
+                      help="Where to search for pretrained BiT models.")
+    
+    parser.add_argument("--dataset", choices=list(known_dataset_sizes.keys()),
+                      help="Choose the dataset. It should be easy to add your own! "
+                      "Don't forget to set --datadir if necessary.")
+    parser.add_argument("--examples_per_class", type=int, default=None,
+                      help="For the few-shot variant, use this many examples "
+                      "per class only.")
+    parser.add_argument("--examples_per_class_seed", type=int, default=0,
+                      help="Random seed for selecting examples.")
+    
+    parser.add_argument("--batch", type=int, default=512,
+                      help="Batch size.")
+    parser.add_argument("--batch_split", type=int, default=1,
+                      help="Number of batches to compute gradient on before updating weights.")
+    parser.add_argument("--base_lr", type=float, default=0.003,
+                      help="Base learning-rate for fine-tuning. Most likely default is best.")
+    parser.add_argument("--eval_every", type=int, default=None,
+                      help="Run prediction on validation set every so many steps."
+                      "Will always run one evaluation at the end of training.")
 
-    # 我认为有用的参数 (一部分是原来就有的, 另一部分是从 timm 上拿过来的)
-    parser.add_argument("--epochs", type=int, default=300, metavar="N", help="number of epochs to train (default: 300)")
-    parser.add_argument("--batch_size", type=int, default=128, help="Input batch size for training (default: 128)")
-    parser.add_argument(
-        "--precision", default="float32", type=str, help="Numeric precision. One of (float32, float16, bfloat16)"
-    )
-    parser.add_argument("--device", default="sdaa", type=str, help="Device (accelerator) to use.")
-    parser.add_argument("--max_step", default=-1, type=int)
+    parser.add_argument("--datadir", required=True,
+                  help="Path to the ImageNet data folder, preprocessed for torchvision.")
+    parser.add_argument("--workers", type=int, default=8,
+                      help="Number of background threads used to load data.")
+    parser.add_argument("--no-save", dest="save", action="store_false")
+    return parser
 
-    # 路径问题
-    parser.add_argument("--dataset_path", type=str, default="")
-    parser.add_argument(
-        "--pretrained_path",
-        default=None,
-        type=str,
-        help="Load this checkpoint as if they were the pretrained weights (with adaptation).",
-    )
-    parser.add_argument("--save_path", type=str, default="", help="Path to save checkpoints.")
 
-    # 优化器参数
-    parser.add_argument("--lr", type=float, default=0.1, metavar="LR", help="learning rate (default: 0.1)")
-    parser.add_argument("--lrf", type=float, default=0.1)
-    parser.add_argument("--weight_decay", type=float, default=1e-4, help="weight decay (default: 1e-4)")
-    parser.add_argument("--momentum", type=float, default=0.9, help="Optimizer momentum (default: 0.9)")
-    parser.add_argument(
-        "--amp", action="store_true", default=False, help="use NVIDIA Apex AMP or Native AMP for mixed precision training"
-    )
+KNOWN_MODELS = OrderedDict([
+    ('BiT-M-R50x1', lambda *a, **kw: ResNetV2([3, 4, 6, 3], 1, *a, **kw)),
+    ('BiT-M-R50x3', lambda *a, **kw: ResNetV2([3, 4, 6, 3], 3, *a, **kw)),
+    ('BiT-M-R101x1', lambda *a, **kw: ResNetV2([3, 4, 23, 3], 1, *a, **kw)),
+    ('BiT-M-R101x3', lambda *a, **kw: ResNetV2([3, 4, 23, 3], 3, *a, **kw)),
+    ('BiT-M-R152x2', lambda *a, **kw: ResNetV2([3, 8, 36, 3], 2, *a, **kw)),
+    ('BiT-M-R152x4', lambda *a, **kw: ResNetV2([3, 8, 36, 3], 4, *a, **kw)),
+    ('BiT-S-R50x1', lambda *a, **kw: ResNetV2([3, 4, 6, 3], 1, *a, **kw)),
+    ('BiT-S-R50x3', lambda *a, **kw: ResNetV2([3, 4, 6, 3], 3, *a, **kw)),
+    ('BiT-S-R101x1', lambda *a, **kw: ResNetV2([3, 4, 23, 3], 1, *a, **kw)),
+    ('BiT-S-R101x3', lambda *a, **kw: ResNetV2([3, 4, 23, 3], 3, *a, **kw)),
+    ('BiT-S-R152x2', lambda *a, **kw: ResNetV2([3, 8, 36, 3], 2, *a, **kw)),
+    ('BiT-S-R152x4', lambda *a, **kw: ResNetV2([3, 8, 36, 3], 4, *a, **kw)),
+])
 
-    opt = parser.parse_args()
-    return opt
+known_dataset_sizes = {
+  'cifar10': (32, 32),
+  'cifar100': (32, 32),
+  'oxford_iiit_pet': (224, 224),
+  'oxford_flowers102': (224, 224),
+  'imagenet2012': (224, 224),
+}

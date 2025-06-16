@@ -1,6 +1,5 @@
-(torch_env_py310) root@nb-zfqfdqzlhp-0:/big_transfer-master# python3 -m bit_pytorch.train --name imagenet_`date +%F_%H%M%S` --model BiT-M-R50x1 --logdir /tmp/bit_logs --dataset imagenet2012 --datadir /data/teco-data/imagenet --batch 4 --base_lr 0.00025 --workers 1 --eval_every 100 --batch_split 4
 --------------+------------------------------------------------
- Host IP      | 10.244.49.142
+ Host IP      | 10.244.49.136
  PyTorch      | 2.4.0a0+git4451b0e
  Torch-SDAA   | 2.1.0
 --------------+------------------------------------------------
@@ -13,414 +12,133 @@
  TecoRAND     | 2.0.1 (/opt/tecoai/lib64/libtecorand.so)
  TCCL         | 1.23.0 (/opt/tecoai/lib64/libtccl.so)
 --------------+------------------------------------------------
-2025-05-21 11:01:09,656 [INFO] bit_common: Namespace(name='imagenet_2025-05-21_110106', model='BiT-M-R50x1', logdir='/tmp/bit_logs', bit_pretrained_dir='.', dataset='imagenet2012', examples_per_class=None, examples_per_class_seed=0, batch=4, batch_split=4, base_lr=0.00025, eval_every=100, datadir='/data/teco-data/imagenet', workers=1, save=True)
-2025-05-21 11:01:09,670 [INFO] bit_common: Going to train on sdaa:0
-2025-05-21 11:01:12,790 [INFO] bit_common: Using a training set with 1281167 images.
-2025-05-21 11:01:12,790 [INFO] bit_common: Using a validation set with 50000 images.
-2025-05-21 11:01:12,790 [INFO] bit_common: Loading model from BiT-M-R50x1.npz
-2025-05-21 11:01:22,157 [INFO] bit_common: Moving model onto all GPUs
-2025-05-21 11:01:22,462 [INFO] bit_common: Model will be saved in '/tmp/bit_logs/imagenet_2025-05-21_110106/bit.pth.tar'
-/big_transfer-master/bit_pytorch/train.py:209: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+2025-06-15 15:29:39,450 [INFO] bit_common: Namespace(name='imagenet_2025-06-15_152936', model='BiT-M-R50x1', logdir='/tmp/bit_logs', bit_pretrained_dir='.', dataset='imagenet2012', examples_per_class=None, examples_per_class_seed=0, batch=4, batch_split=4, base_lr=0.00025, eval_every=100, datadir='/data/teco-data/imagenet', workers=8, save=True)
+2025-06-15 15:29:39,471 [INFO] bit_common: Going to train on sdaa:0
+2025-06-15 15:29:42,989 [INFO] bit_common: Using a training set with 1281167 images.
+2025-06-15 15:29:42,989 [INFO] bit_common: Using a validation set with 50000 images.
+2025-06-15 15:29:42,990 [INFO] bit_common: Loading model from BiT-M-R50x1.npz
+2025-06-15 15:29:52,565 [INFO] bit_common: Moving model onto all GPUs
+2025-06-15 15:29:52,788 [INFO] bit_common: Model will be saved in '/tmp/bit_logs/imagenet_2025-06-15_152936/bit.pth.tar'
+/data/bupt-data/lzw/BiT/train.py:210: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
   checkpoint = torch.load(savename, map_location="cpu")
-2025-05-21 11:01:22,462 [INFO] bit_common: Fine-tuning from BiT
-2025-05-21 11:01:23,643 [INFO] bit_common: Starting training!
-2025-05-21 11:01:28,715 [INFO] bit_common: [step 0 (1/4)]: loss=6.90776 (lr=0.0e+00)
-2025-05-21 11:01:32,819 [INFO] bit_common: [step 0 (2/4)]: loss=6.90776 (lr=0.0e+00)
-2025-05-21 11:01:36,619 [INFO] bit_common: [step 0 (3/4)]: loss=6.90776 (lr=0.0e+00)
-2025-05-21 11:01:40,816 [INFO] bit_common: [step 0 (4/4)]: loss=6.90776 (lr=0.0e+00)
-2025-05-21 11:01:45,211 [INFO] bit_common: [step 1 (1/4)]: loss=6.90776 (lr=5.0e-07)
-2025-05-21 11:01:49,618 [INFO] bit_common: [step 1 (2/4)]: loss=6.90776 (lr=5.0e-07)
-2025-05-21 11:01:54,115 [INFO] bit_common: [step 1 (3/4)]: loss=6.90776 (lr=5.0e-07)
-2025-05-21 11:01:58,617 [INFO] bit_common: [step 1 (4/4)]: loss=6.90776 (lr=5.0e-07)
-2025-05-21 11:02:03,421 [INFO] bit_common: [step 2 (1/4)]: loss=6.90776 (lr=1.0e-06)
-2025-05-21 11:02:08,117 [INFO] bit_common: [step 2 (2/4)]: loss=6.90776 (lr=1.0e-06)
-2025-05-21 11:02:12,620 [INFO] bit_common: [step 2 (3/4)]: loss=6.90776 (lr=1.0e-06)
-2025-05-21 11:02:17,224 [INFO] bit_common: [step 2 (4/4)]: loss=6.90776 (lr=1.0e-06)
-2025-05-21 11:02:21,621 [INFO] bit_common: [step 3 (1/4)]: loss=6.90776 (lr=1.5e-06)
-2025-05-21 11:02:26,417 [INFO] bit_common: [step 3 (2/4)]: loss=6.90776 (lr=1.5e-06)
-2025-05-21 11:02:30,518 [INFO] bit_common: [step 3 (3/4)]: loss=6.90776 (lr=1.5e-06)
-2025-05-21 11:02:34,813 [INFO] bit_common: [step 3 (4/4)]: loss=6.90776 (lr=1.5e-06)
-2025-05-21 11:02:39,224 [INFO] bit_common: [step 4 (1/4)]: loss=6.90776 (lr=2.0e-06)
-2025-05-21 11:02:43,617 [INFO] bit_common: [step 4 (2/4)]: loss=6.90776 (lr=2.0e-06)
-2025-05-21 11:02:47,937 [INFO] bit_common: [step 4 (3/4)]: loss=6.90776 (lr=2.0e-06)
-2025-05-21 11:02:52,417 [INFO] bit_common: [step 4 (4/4)]: loss=6.90776 (lr=2.0e-06)
-2025-05-21 11:02:56,812 [INFO] bit_common: [step 5 (1/4)]: loss=6.90776 (lr=2.5e-06)
-2025-05-21 11:03:01,419 [INFO] bit_common: [step 5 (2/4)]: loss=6.90776 (lr=2.5e-06)
-2025-05-21 11:03:06,216 [INFO] bit_common: [step 5 (3/4)]: loss=6.90776 (lr=2.5e-06)
-2025-05-21 11:03:10,813 [INFO] bit_common: [step 5 (4/4)]: loss=6.90776 (lr=2.5e-06)
-2025-05-21 11:03:15,115 [INFO] bit_common: [step 6 (1/4)]: loss=6.90775 (lr=3.0e-06)
-2025-05-21 11:03:19,917 [INFO] bit_common: [step 6 (2/4)]: loss=6.90775 (lr=3.0e-06)
-2025-05-21 11:03:24,417 [INFO] bit_common: [step 6 (3/4)]: loss=6.90775 (lr=3.0e-06)
-2025-05-21 11:03:28,917 [INFO] bit_common: [step 6 (4/4)]: loss=6.90775 (lr=3.0e-06)
-2025-05-21 11:03:33,319 [INFO] bit_common: [step 7 (1/4)]: loss=6.90776 (lr=3.5e-06)
-2025-05-21 11:03:37,717 [INFO] bit_common: [step 7 (2/4)]: loss=6.90776 (lr=3.5e-06)
-2025-05-21 11:03:42,106 [INFO] bit_common: [step 7 (3/4)]: loss=6.90775 (lr=3.5e-06)
-2025-05-21 11:03:46,323 [INFO] bit_common: [step 7 (4/4)]: loss=6.90776 (lr=3.5e-06)
-2025-05-21 11:03:50,919 [INFO] bit_common: [step 8 (1/4)]: loss=6.90776 (lr=4.0e-06)
-2025-05-21 11:03:56,217 [INFO] bit_common: [step 8 (2/4)]: loss=6.90775 (lr=4.0e-06)
-2025-05-21 11:04:00,712 [INFO] bit_common: [step 8 (3/4)]: loss=6.90776 (lr=4.0e-06)
-2025-05-21 11:04:05,016 [INFO] bit_common: [step 8 (4/4)]: loss=6.90776 (lr=4.0e-06)
-2025-05-21 11:04:09,618 [INFO] bit_common: [step 9 (1/4)]: loss=6.90776 (lr=4.5e-06)
-2025-05-21 11:04:14,018 [INFO] bit_common: [step 9 (2/4)]: loss=6.90776 (lr=4.5e-06)
-2025-05-21 11:04:17,916 [INFO] bit_common: [step 9 (3/4)]: loss=6.90776 (lr=4.5e-06)
-2025-05-21 11:04:22,017 [INFO] bit_common: [step 9 (4/4)]: loss=6.90776 (lr=4.5e-06)
-2025-05-21 11:04:27,014 [INFO] bit_common: [step 10 (1/4)]: loss=6.90776 (lr=5.0e-06)
-2025-05-21 11:04:31,920 [INFO] bit_common: [step 10 (2/4)]: loss=6.90776 (lr=5.0e-06)
-2025-05-21 11:04:36,718 [INFO] bit_common: [step 10 (3/4)]: loss=6.90776 (lr=5.0e-06)
-2025-05-21 11:04:41,313 [INFO] bit_common: [step 10 (4/4)]: loss=6.90776 (lr=5.0e-06)
-2025-05-21 11:04:45,485 [INFO] bit_common: [step 11 (1/4)]: loss=6.90777 (lr=5.5e-06)
-2025-05-21 11:04:50,215 [INFO] bit_common: [step 11 (2/4)]: loss=6.90777 (lr=5.5e-06)
-2025-05-21 11:04:54,411 [INFO] bit_common: [step 11 (3/4)]: loss=6.90776 (lr=5.5e-06)
-2025-05-21 11:04:58,614 [INFO] bit_common: [step 11 (4/4)]: loss=6.90777 (lr=5.5e-06)
-2025-05-21 11:05:03,209 [INFO] bit_common: [step 12 (1/4)]: loss=6.90683 (lr=6.0e-06)
-2025-05-21 11:05:07,419 [INFO] bit_common: [step 12 (2/4)]: loss=6.90779 (lr=6.0e-06)
-2025-05-21 11:05:12,118 [INFO] bit_common: [step 12 (3/4)]: loss=6.90778 (lr=6.0e-06)
-2025-05-21 11:05:16,316 [INFO] bit_common: [step 12 (4/4)]: loss=6.90779 (lr=6.0e-06)
-2025-05-21 11:05:20,474 [INFO] bit_common: [step 13 (1/4)]: loss=6.90781 (lr=6.5e-06)
-2025-05-21 11:05:24,612 [INFO] bit_common: [step 13 (2/4)]: loss=6.90781 (lr=6.5e-06)
-2025-05-21 11:05:28,718 [INFO] bit_common: [step 13 (3/4)]: loss=6.90781 (lr=6.5e-06)
-2025-05-21 11:05:33,416 [INFO] bit_common: [step 13 (4/4)]: loss=6.90781 (lr=6.5e-06)
-2025-05-21 11:05:37,616 [INFO] bit_common: [step 14 (1/4)]: loss=6.90785 (lr=7.0e-06)
-2025-05-21 11:05:41,897 [INFO] bit_common: [step 14 (2/4)]: loss=6.90788 (lr=7.0e-06)
-2025-05-21 11:05:46,014 [INFO] bit_common: [step 14 (3/4)]: loss=6.90788 (lr=7.0e-06)
-2025-05-21 11:05:50,215 [INFO] bit_common: [step 14 (4/4)]: loss=6.90785 (lr=7.0e-06)
-2025-05-21 11:05:54,501 [INFO] bit_common: [step 15 (1/4)]: loss=6.90791 (lr=7.5e-06)
-2025-05-21 11:05:58,618 [INFO] bit_common: [step 15 (2/4)]: loss=6.90791 (lr=7.5e-06)
-2025-05-21 11:06:03,023 [INFO] bit_common: [step 15 (3/4)]: loss=6.90797 (lr=7.5e-06)
-2025-05-21 11:06:07,415 [INFO] bit_common: [step 15 (4/4)]: loss=6.90792 (lr=7.5e-06)
-2025-05-21 11:06:11,581 [INFO] bit_common: [step 16 (1/4)]: loss=6.90804 (lr=8.0e-06)
-2025-05-21 11:06:16,216 [INFO] bit_common: [step 16 (2/4)]: loss=6.90477 (lr=8.0e-06)
-2025-05-21 11:06:20,304 [INFO] bit_common: [step 16 (3/4)]: loss=6.90806 (lr=8.0e-06)
-2025-05-21 11:06:24,416 [INFO] bit_common: [step 16 (4/4)]: loss=6.90800 (lr=8.0e-06)
-2025-05-21 11:06:28,515 [INFO] bit_common: [step 17 (1/4)]: loss=6.90816 (lr=8.5e-06)
-2025-05-21 11:06:32,919 [INFO] bit_common: [step 17 (2/4)]: loss=6.90819 (lr=8.5e-06)
-2025-05-21 11:06:37,117 [INFO] bit_common: [step 17 (3/4)]: loss=6.90814 (lr=8.5e-06)
-2025-05-21 11:06:41,115 [INFO] bit_common: [step 17 (4/4)]: loss=6.90818 (lr=8.5e-06)
-2025-05-21 11:06:45,317 [INFO] bit_common: [step 18 (1/4)]: loss=6.90826 (lr=9.0e-06)
-2025-05-21 11:06:49,716 [INFO] bit_common: [step 18 (2/4)]: loss=6.90826 (lr=9.0e-06)
-2025-05-21 11:06:53,619 [INFO] bit_common: [step 18 (3/4)]: loss=6.90126 (lr=9.0e-06)
-2025-05-21 11:06:57,615 [INFO] bit_common: [step 18 (4/4)]: loss=6.90834 (lr=9.0e-06)
-2025-05-21 11:07:01,813 [INFO] bit_common: [step 19 (1/4)]: loss=6.90851 (lr=9.5e-06)
-2025-05-21 11:07:06,218 [INFO] bit_common: [step 19 (2/4)]: loss=6.90856 (lr=9.5e-06)
-2025-05-21 11:07:10,415 [INFO] bit_common: [step 19 (3/4)]: loss=6.90843 (lr=9.5e-06)
-2025-05-21 11:07:14,813 [INFO] bit_common: [step 19 (4/4)]: loss=6.90846 (lr=9.5e-06)
-2025-05-21 11:07:18,974 [INFO] bit_common: [step 20 (1/4)]: loss=6.89406 (lr=1.0e-05)
-2025-05-21 11:07:23,217 [INFO] bit_common: [step 20 (2/4)]: loss=6.89746 (lr=1.0e-05)
-2025-05-21 11:07:27,717 [INFO] bit_common: [step 20 (3/4)]: loss=6.90859 (lr=1.0e-05)
-2025-05-21 11:07:32,321 [INFO] bit_common: [step 20 (4/4)]: loss=6.90864 (lr=1.0e-05)
-2025-05-21 11:07:37,412 [INFO] bit_common: [step 21 (1/4)]: loss=6.90909 (lr=1.1e-05)
-2025-05-21 11:07:41,918 [INFO] bit_common: [step 21 (2/4)]: loss=6.90889 (lr=1.1e-05)
-2025-05-21 11:07:46,525 [INFO] bit_common: [step 21 (3/4)]: loss=6.90892 (lr=1.1e-05)
-2025-05-21 11:07:51,719 [INFO] bit_common: [step 21 (4/4)]: loss=6.85916 (lr=1.1e-05)
-2025-05-21 11:07:56,511 [INFO] bit_common: [step 22 (1/4)]: loss=6.90922 (lr=1.1e-05)
-2025-05-21 11:08:01,217 [INFO] bit_common: [step 22 (2/4)]: loss=6.90926 (lr=1.1e-05)
-2025-05-21 11:08:05,719 [INFO] bit_common: [step 22 (3/4)]: loss=6.90931 (lr=1.1e-05)
-2025-05-21 11:08:10,220 [INFO] bit_common: [step 22 (4/4)]: loss=6.90924 (lr=1.1e-05)
-2025-05-21 11:08:15,015 [INFO] bit_common: [step 23 (1/4)]: loss=6.90969 (lr=1.2e-05)
-2025-05-21 11:08:19,718 [INFO] bit_common: [step 23 (2/4)]: loss=6.90954 (lr=1.2e-05)
-2025-05-21 11:08:24,218 [INFO] bit_common: [step 23 (3/4)]: loss=6.90975 (lr=1.2e-05)
-2025-05-21 11:08:28,619 [INFO] bit_common: [step 23 (4/4)]: loss=6.90953 (lr=1.2e-05)
-2025-05-21 11:08:33,119 [INFO] bit_common: [step 24 (1/4)]: loss=6.88446 (lr=1.2e-05)
-2025-05-21 11:08:37,718 [INFO] bit_common: [step 24 (2/4)]: loss=6.90992 (lr=1.2e-05)
-2025-05-21 11:08:42,214 [INFO] bit_common: [step 24 (3/4)]: loss=6.90973 (lr=1.2e-05)
-2025-05-21 11:08:46,720 [INFO] bit_common: [step 24 (4/4)]: loss=6.79477 (lr=1.2e-05)
-2025-05-21 11:08:51,412 [INFO] bit_common: [step 25 (1/4)]: loss=6.91090 (lr=1.3e-05)
-2025-05-21 11:08:56,118 [INFO] bit_common: [step 25 (2/4)]: loss=6.91037 (lr=1.3e-05)
-2025-05-21 11:09:00,915 [INFO] bit_common: [step 25 (3/4)]: loss=6.91051 (lr=1.3e-05)
-2025-05-21 11:09:05,716 [INFO] bit_common: [step 25 (4/4)]: loss=6.91034 (lr=1.3e-05)
-2025-05-21 11:09:10,518 [INFO] bit_common: [step 26 (1/4)]: loss=6.84482 (lr=1.3e-05)
-2025-05-21 11:09:15,214 [INFO] bit_common: [step 26 (2/4)]: loss=6.91089 (lr=1.3e-05)
-2025-05-21 11:09:19,818 [INFO] bit_common: [step 26 (3/4)]: loss=6.91083 (lr=1.3e-05)
-2025-05-21 11:09:24,419 [INFO] bit_common: [step 26 (4/4)]: loss=6.91075 (lr=1.3e-05)
-2025-05-21 11:09:29,216 [INFO] bit_common: [step 27 (1/4)]: loss=6.88480 (lr=1.3e-05)
-2025-05-21 11:09:33,717 [INFO] bit_common: [step 27 (2/4)]: loss=6.86876 (lr=1.3e-05)
-2025-05-21 11:09:38,215 [INFO] bit_common: [step 27 (3/4)]: loss=6.91151 (lr=1.3e-05)
-2025-05-21 11:09:42,715 [INFO] bit_common: [step 27 (4/4)]: loss=6.91135 (lr=1.3e-05)
-2025-05-21 11:09:47,411 [INFO] bit_common: [step 28 (1/4)]: loss=6.82763 (lr=1.4e-05)
-2025-05-21 11:09:51,920 [INFO] bit_common: [step 28 (2/4)]: loss=6.91189 (lr=1.4e-05)
-2025-05-21 11:09:56,512 [INFO] bit_common: [step 28 (3/4)]: loss=6.86537 (lr=1.4e-05)
-2025-05-21 11:10:01,121 [INFO] bit_common: [step 28 (4/4)]: loss=6.88675 (lr=1.4e-05)
-2025-05-21 11:10:05,888 [INFO] bit_common: [step 29 (1/4)]: loss=6.91245 (lr=1.5e-05)
-2025-05-21 11:10:10,415 [INFO] bit_common: [step 29 (2/4)]: loss=6.91233 (lr=1.5e-05)
-2025-05-21 11:10:14,717 [INFO] bit_common: [step 29 (3/4)]: loss=6.91270 (lr=1.5e-05)
-2025-05-21 11:10:18,911 [INFO] bit_common: [step 29 (4/4)]: loss=6.91222 (lr=1.5e-05)
-2025-05-21 11:10:23,505 [INFO] bit_common: [step 30 (1/4)]: loss=6.91330 (lr=1.5e-05)
-2025-05-21 11:10:27,915 [INFO] bit_common: [step 30 (2/4)]: loss=6.91286 (lr=1.5e-05)
-2025-05-21 11:10:32,422 [INFO] bit_common: [step 30 (3/4)]: loss=6.91285 (lr=1.5e-05)
-2025-05-21 11:10:36,817 [INFO] bit_common: [step 30 (4/4)]: loss=6.91329 (lr=1.5e-05)
-2025-05-21 11:10:41,102 [INFO] bit_common: [step 31 (1/4)]: loss=6.91381 (lr=1.6e-05)
-2025-05-21 11:10:45,490 [INFO] bit_common: [step 31 (2/4)]: loss=6.91388 (lr=1.6e-05)
-2025-05-21 11:10:50,214 [INFO] bit_common: [step 31 (3/4)]: loss=6.91387 (lr=1.6e-05)
-2025-05-21 11:10:54,215 [INFO] bit_common: [step 31 (4/4)]: loss=6.91368 (lr=1.6e-05)
-2025-05-21 11:10:58,514 [INFO] bit_common: [step 32 (1/4)]: loss=6.91449 (lr=1.6e-05)
-2025-05-21 11:11:02,824 [INFO] bit_common: [step 32 (2/4)]: loss=6.91464 (lr=1.6e-05)
-2025-05-21 11:11:07,314 [INFO] bit_common: [step 32 (3/4)]: loss=6.91420 (lr=1.6e-05)
-2025-05-21 11:11:11,815 [INFO] bit_common: [step 32 (4/4)]: loss=6.91414 (lr=1.6e-05)
-2025-05-21 11:11:16,116 [INFO] bit_common: [step 33 (1/4)]: loss=6.83444 (lr=1.7e-05)
-2025-05-21 11:11:20,815 [INFO] bit_common: [step 33 (2/4)]: loss=6.91493 (lr=1.7e-05)
-2025-05-21 11:11:25,318 [INFO] bit_common: [step 33 (3/4)]: loss=6.91518 (lr=1.7e-05)
-2025-05-21 11:11:30,019 [INFO] bit_common: [step 33 (4/4)]: loss=6.91469 (lr=1.7e-05)
-2025-05-21 11:11:34,610 [INFO] bit_common: [step 34 (1/4)]: loss=6.79861 (lr=1.7e-05)
-2025-05-21 11:11:39,314 [INFO] bit_common: [step 34 (2/4)]: loss=6.83149 (lr=1.7e-05)
-2025-05-21 11:11:43,608 [INFO] bit_common: [step 34 (3/4)]: loss=6.88609 (lr=1.7e-05)
-2025-05-21 11:11:48,219 [INFO] bit_common: [step 34 (4/4)]: loss=6.91589 (lr=1.7e-05)
-2025-05-21 11:11:53,015 [INFO] bit_common: [step 35 (1/4)]: loss=6.91628 (lr=1.8e-05)
-2025-05-21 11:11:57,618 [INFO] bit_common: [step 35 (2/4)]: loss=6.91565 (lr=1.8e-05)
-2025-05-21 11:12:02,017 [INFO] bit_common: [step 35 (3/4)]: loss=6.82833 (lr=1.8e-05)
-2025-05-21 11:12:06,516 [INFO] bit_common: [step 35 (4/4)]: loss=6.91693 (lr=1.8e-05)
-2025-05-21 11:12:11,311 [INFO] bit_common: [step 36 (1/4)]: loss=6.91728 (lr=1.8e-05)
-2025-05-21 11:12:16,116 [INFO] bit_common: [step 36 (2/4)]: loss=6.91822 (lr=1.8e-05)
-2025-05-21 11:12:20,718 [INFO] bit_common: [step 36 (3/4)]: loss=6.79007 (lr=1.8e-05)
-2025-05-21 11:12:25,614 [INFO] bit_common: [step 36 (4/4)]: loss=6.91685 (lr=1.8e-05)
-2025-05-21 11:12:30,213 [INFO] bit_common: [step 37 (1/4)]: loss=6.91857 (lr=1.8e-05)
-2025-05-21 11:12:35,213 [INFO] bit_common: [step 37 (2/4)]: loss=6.91832 (lr=1.8e-05)
-2025-05-21 11:12:40,016 [INFO] bit_common: [step 37 (3/4)]: loss=6.91816 (lr=1.8e-05)
-2025-05-21 11:12:44,915 [INFO] bit_common: [step 37 (4/4)]: loss=6.91835 (lr=1.8e-05)
-2025-05-21 11:12:49,812 [INFO] bit_common: [step 38 (1/4)]: loss=6.91950 (lr=1.9e-05)
-2025-05-21 11:12:54,517 [INFO] bit_common: [step 38 (2/4)]: loss=6.91978 (lr=1.9e-05)
-2025-05-21 11:12:59,118 [INFO] bit_common: [step 38 (3/4)]: loss=6.91937 (lr=1.9e-05)
-2025-05-21 11:13:04,015 [INFO] bit_common: [step 38 (4/4)]: loss=6.91922 (lr=1.9e-05)
-2025-05-21 11:13:08,815 [INFO] bit_common: [step 39 (1/4)]: loss=6.91894 (lr=1.9e-05)
-2025-05-21 11:13:13,617 [INFO] bit_common: [step 39 (2/4)]: loss=6.91978 (lr=1.9e-05)
-2025-05-21 11:13:18,517 [INFO] bit_common: [step 39 (3/4)]: loss=6.92042 (lr=1.9e-05)
-2025-05-21 11:13:23,217 [INFO] bit_common: [step 39 (4/4)]: loss=6.86522 (lr=1.9e-05)
-2025-05-21 11:13:28,016 [INFO] bit_common: [step 40 (1/4)]: loss=6.92065 (lr=2.0e-05)
-2025-05-21 11:13:32,620 [INFO] bit_common: [step 40 (2/4)]: loss=6.83759 (lr=2.0e-05)
-2025-05-21 11:13:37,016 [INFO] bit_common: [step 40 (3/4)]: loss=6.91978 (lr=2.0e-05)
-2025-05-21 11:13:41,516 [INFO] bit_common: [step 40 (4/4)]: loss=6.92094 (lr=2.0e-05)
-2025-05-21 11:13:46,114 [INFO] bit_common: [step 41 (1/4)]: loss=6.92149 (lr=2.1e-05)
-2025-05-21 11:13:50,716 [INFO] bit_common: [step 41 (2/4)]: loss=6.92070 (lr=2.1e-05)
-2025-05-21 11:13:55,216 [INFO] bit_common: [step 41 (3/4)]: loss=6.92141 (lr=2.1e-05)
-2025-05-21 11:13:59,916 [INFO] bit_common: [step 41 (4/4)]: loss=6.92057 (lr=2.1e-05)
-2025-05-21 11:14:04,513 [INFO] bit_common: [step 42 (1/4)]: loss=6.92359 (lr=2.1e-05)
-2025-05-21 11:14:09,016 [INFO] bit_common: [step 42 (2/4)]: loss=6.92187 (lr=2.1e-05)
-2025-05-21 11:14:13,418 [INFO] bit_common: [step 42 (3/4)]: loss=6.87772 (lr=2.1e-05)
-2025-05-21 11:14:18,017 [INFO] bit_common: [step 42 (4/4)]: loss=6.92390 (lr=2.1e-05)
-2025-05-21 11:14:22,515 [INFO] bit_common: [step 43 (1/4)]: loss=6.92248 (lr=2.2e-05)
-2025-05-21 11:14:27,117 [INFO] bit_common: [step 43 (2/4)]: loss=6.92211 (lr=2.2e-05)
-2025-05-21 11:14:31,517 [INFO] bit_common: [step 43 (3/4)]: loss=6.92235 (lr=2.2e-05)
-2025-05-21 11:14:36,119 [INFO] bit_common: [step 43 (4/4)]: loss=6.92185 (lr=2.2e-05)
-2025-05-21 11:14:41,015 [INFO] bit_common: [step 44 (1/4)]: loss=6.92282 (lr=2.2e-05)
-2025-05-21 11:14:45,917 [INFO] bit_common: [step 44 (2/4)]: loss=6.92509 (lr=2.2e-05)
-2025-05-21 11:14:50,716 [INFO] bit_common: [step 44 (3/4)]: loss=6.92440 (lr=2.2e-05)
-2025-05-21 11:14:55,514 [INFO] bit_common: [step 44 (4/4)]: loss=6.92385 (lr=2.2e-05)
-2025-05-21 11:15:00,614 [INFO] bit_common: [step 45 (1/4)]: loss=6.92492 (lr=2.2e-05)
-2025-05-21 11:15:05,317 [INFO] bit_common: [step 45 (2/4)]: loss=6.92797 (lr=2.2e-05)
-2025-05-21 11:15:10,221 [INFO] bit_common: [step 45 (3/4)]: loss=6.92678 (lr=2.2e-05)
-2025-05-21 11:15:15,017 [INFO] bit_common: [step 45 (4/4)]: loss=6.92628 (lr=2.2e-05)
-2025-05-21 11:15:19,615 [INFO] bit_common: [step 46 (1/4)]: loss=6.92738 (lr=2.3e-05)
-2025-05-21 11:15:24,215 [INFO] bit_common: [step 46 (2/4)]: loss=6.92614 (lr=2.3e-05)
-2025-05-21 11:15:28,316 [INFO] bit_common: [step 46 (3/4)]: loss=6.92778 (lr=2.3e-05)
-2025-05-21 11:15:32,917 [INFO] bit_common: [step 46 (4/4)]: loss=6.72352 (lr=2.3e-05)
-2025-05-21 11:15:37,415 [INFO] bit_common: [step 47 (1/4)]: loss=6.92803 (lr=2.3e-05)
-2025-05-21 11:15:42,016 [INFO] bit_common: [step 47 (2/4)]: loss=6.92678 (lr=2.3e-05)
-2025-05-21 11:15:46,121 [INFO] bit_common: [step 47 (3/4)]: loss=6.92926 (lr=2.3e-05)
-2025-05-21 11:15:50,717 [INFO] bit_common: [step 47 (4/4)]: loss=6.92673 (lr=2.3e-05)
-2025-05-21 11:15:55,214 [INFO] bit_common: [step 48 (1/4)]: loss=6.79945 (lr=2.4e-05)
-2025-05-21 11:15:59,816 [INFO] bit_common: [step 48 (2/4)]: loss=6.93019 (lr=2.4e-05)
-2025-05-21 11:16:04,216 [INFO] bit_common: [step 48 (3/4)]: loss=6.92735 (lr=2.4e-05)
-2025-05-21 11:16:08,814 [INFO] bit_common: [step 48 (4/4)]: loss=6.92853 (lr=2.4e-05)
-2025-05-21 11:16:13,112 [INFO] bit_common: [step 49 (1/4)]: loss=6.92889 (lr=2.5e-05)
-2025-05-21 11:16:17,820 [INFO] bit_common: [step 49 (2/4)]: loss=6.93051 (lr=2.5e-05)
-2025-05-21 11:16:22,520 [INFO] bit_common: [step 49 (3/4)]: loss=6.92944 (lr=2.5e-05)
-2025-05-21 11:16:27,117 [INFO] bit_common: [step 49 (4/4)]: loss=6.92986 (lr=2.5e-05)
-2025-05-21 11:16:31,614 [INFO] bit_common: [step 50 (1/4)]: loss=6.92900 (lr=2.5e-05)
-2025-05-21 11:16:36,316 [INFO] bit_common: [step 50 (2/4)]: loss=6.93093 (lr=2.5e-05)
-2025-05-21 11:16:40,921 [INFO] bit_common: [step 50 (3/4)]: loss=6.75004 (lr=2.5e-05)
-2025-05-21 11:16:45,715 [INFO] bit_common: [step 50 (4/4)]: loss=6.93181 (lr=2.5e-05)
-2025-05-21 11:16:50,417 [INFO] bit_common: [step 51 (1/4)]: loss=6.93206 (lr=2.6e-05)
-2025-05-21 11:16:55,113 [INFO] bit_common: [step 51 (2/4)]: loss=6.93042 (lr=2.6e-05)
-2025-05-21 11:16:59,816 [INFO] bit_common: [step 51 (3/4)]: loss=6.93246 (lr=2.6e-05)
-2025-05-21 11:17:04,317 [INFO] bit_common: [step 51 (4/4)]: loss=6.93375 (lr=2.6e-05)
-2025-05-21 11:17:09,215 [INFO] bit_common: [step 52 (1/4)]: loss=6.93092 (lr=2.6e-05)
-2025-05-21 11:17:13,917 [INFO] bit_common: [step 52 (2/4)]: loss=6.93355 (lr=2.6e-05)
-2025-05-21 11:17:18,417 [INFO] bit_common: [step 52 (3/4)]: loss=6.93409 (lr=2.6e-05)
-2025-05-21 11:17:23,215 [INFO] bit_common: [step 52 (4/4)]: loss=6.93301 (lr=2.6e-05)
-2025-05-21 11:17:28,015 [INFO] bit_common: [step 53 (1/4)]: loss=6.88183 (lr=2.7e-05)
-2025-05-21 11:17:32,816 [INFO] bit_common: [step 53 (2/4)]: loss=6.93529 (lr=2.7e-05)
-2025-05-21 11:17:37,316 [INFO] bit_common: [step 53 (3/4)]: loss=6.93296 (lr=2.7e-05)
-2025-05-21 11:17:41,818 [INFO] bit_common: [step 53 (4/4)]: loss=6.93550 (lr=2.7e-05)
-2025-05-21 11:17:46,314 [INFO] bit_common: [step 54 (1/4)]: loss=6.93179 (lr=2.7e-05)
-2025-05-21 11:17:51,119 [INFO] bit_common: [step 54 (2/4)]: loss=6.93270 (lr=2.7e-05)
-2025-05-21 11:17:55,815 [INFO] bit_common: [step 54 (3/4)]: loss=6.93756 (lr=2.7e-05)
-2025-05-21 11:18:00,315 [INFO] bit_common: [step 54 (4/4)]: loss=6.93691 (lr=2.7e-05)
-2025-05-21 11:18:05,017 [INFO] bit_common: [step 55 (1/4)]: loss=6.93353 (lr=2.8e-05)
-2025-05-21 11:18:09,517 [INFO] bit_common: [step 55 (2/4)]: loss=6.93409 (lr=2.8e-05)
-2025-05-21 11:18:14,021 [INFO] bit_common: [step 55 (3/4)]: loss=6.93669 (lr=2.8e-05)
-2025-05-21 11:18:18,623 [INFO] bit_common: [step 55 (4/4)]: loss=6.93468 (lr=2.8e-05)
-2025-05-21 11:18:23,216 [INFO] bit_common: [step 56 (1/4)]: loss=6.93618 (lr=2.8e-05)
-2025-05-21 11:18:27,614 [INFO] bit_common: [step 56 (2/4)]: loss=6.93830 (lr=2.8e-05)
-2025-05-21 11:18:32,119 [INFO] bit_common: [step 56 (3/4)]: loss=6.23602 (lr=2.8e-05)
-2025-05-21 11:18:36,819 [INFO] bit_common: [step 56 (4/4)]: loss=6.93642 (lr=2.8e-05)
-2025-05-21 11:18:41,615 [INFO] bit_common: [step 57 (1/4)]: loss=6.94028 (lr=2.9e-05)
-2025-05-21 11:18:46,010 [INFO] bit_common: [step 57 (2/4)]: loss=6.93722 (lr=2.9e-05)
-2025-05-21 11:18:50,618 [INFO] bit_common: [step 57 (3/4)]: loss=6.94241 (lr=2.9e-05)
-2025-05-21 11:18:55,217 [INFO] bit_common: [step 57 (4/4)]: loss=6.93640 (lr=2.9e-05)
-2025-05-21 11:18:59,712 [INFO] bit_common: [step 58 (1/4)]: loss=6.94216 (lr=2.9e-05)
-2025-05-21 11:19:04,517 [INFO] bit_common: [step 58 (2/4)]: loss=6.94423 (lr=2.9e-05)
-2025-05-21 11:19:09,614 [INFO] bit_common: [step 58 (3/4)]: loss=6.94225 (lr=2.9e-05)
-2025-05-21 11:19:14,517 [INFO] bit_common: [step 58 (4/4)]: loss=6.86329 (lr=2.9e-05)
-2025-05-21 11:19:19,516 [INFO] bit_common: [step 59 (1/4)]: loss=6.94291 (lr=3.0e-05)
-2025-05-21 11:19:24,116 [INFO] bit_common: [step 59 (2/4)]: loss=6.59033 (lr=3.0e-05)
-2025-05-21 11:19:28,918 [INFO] bit_common: [step 59 (3/4)]: loss=6.94571 (lr=3.0e-05)
-2025-05-21 11:19:33,916 [INFO] bit_common: [step 59 (4/4)]: loss=6.94197 (lr=3.0e-05)
-2025-05-21 11:19:38,910 [INFO] bit_common: [step 60 (1/4)]: loss=6.94293 (lr=3.0e-05)
-2025-05-21 11:19:43,717 [INFO] bit_common: [step 60 (2/4)]: loss=6.94480 (lr=3.0e-05)
-2025-05-21 11:19:48,416 [INFO] bit_common: [step 60 (3/4)]: loss=6.94228 (lr=3.0e-05)
-2025-05-21 11:19:53,420 [INFO] bit_common: [step 60 (4/4)]: loss=6.94046 (lr=3.0e-05)
-2025-05-21 11:19:58,420 [INFO] bit_common: [step 61 (1/4)]: loss=6.94658 (lr=3.0e-05)
-2025-05-21 11:20:03,615 [INFO] bit_common: [step 61 (2/4)]: loss=6.94630 (lr=3.0e-05)
-2025-05-21 11:20:08,322 [INFO] bit_common: [step 61 (3/4)]: loss=6.94680 (lr=3.0e-05)
-2025-05-21 11:20:13,417 [INFO] bit_common: [step 61 (4/4)]: loss=6.94098 (lr=3.0e-05)
-2025-05-21 11:20:18,224 [INFO] bit_common: [step 62 (1/4)]: loss=6.94321 (lr=3.1e-05)
-2025-05-21 11:20:23,521 [INFO] bit_common: [step 62 (2/4)]: loss=6.73775 (lr=3.1e-05)
-2025-05-21 11:20:28,115 [INFO] bit_common: [step 62 (3/4)]: loss=6.94137 (lr=3.1e-05)
-2025-05-21 11:20:32,816 [INFO] bit_common: [step 62 (4/4)]: loss=6.94657 (lr=3.1e-05)
-2025-05-21 11:20:37,415 [INFO] bit_common: [step 63 (1/4)]: loss=6.94623 (lr=3.1e-05)
-2025-05-21 11:20:41,914 [INFO] bit_common: [step 63 (2/4)]: loss=6.94586 (lr=3.1e-05)
-2025-05-21 11:20:46,421 [INFO] bit_common: [step 63 (3/4)]: loss=6.55373 (lr=3.1e-05)
-2025-05-21 11:20:51,121 [INFO] bit_common: [step 63 (4/4)]: loss=6.94533 (lr=3.1e-05)
-2025-05-21 11:20:55,815 [INFO] bit_common: [step 64 (1/4)]: loss=6.94818 (lr=3.2e-05)
-2025-05-21 11:21:00,415 [INFO] bit_common: [step 64 (2/4)]: loss=6.46882 (lr=3.2e-05)
-2025-05-21 11:21:05,116 [INFO] bit_common: [step 64 (3/4)]: loss=6.94697 (lr=3.2e-05)
-2025-05-21 11:21:09,615 [INFO] bit_common: [step 64 (4/4)]: loss=6.56585 (lr=3.2e-05)
-2025-05-21 11:21:14,213 [INFO] bit_common: [step 65 (1/4)]: loss=6.95276 (lr=3.3e-05)
-2025-05-21 11:21:18,820 [INFO] bit_common: [step 65 (2/4)]: loss=6.53964 (lr=3.3e-05)
-2025-05-21 11:21:23,525 [INFO] bit_common: [step 65 (3/4)]: loss=6.95413 (lr=3.3e-05)
-2025-05-21 11:21:28,416 [INFO] bit_common: [step 65 (4/4)]: loss=6.94938 (lr=3.3e-05)
-2025-05-21 11:21:32,913 [INFO] bit_common: [step 66 (1/4)]: loss=6.94983 (lr=3.3e-05)
-2025-05-21 11:21:37,215 [INFO] bit_common: [step 66 (2/4)]: loss=6.94954 (lr=3.3e-05)
-2025-05-21 11:21:41,715 [INFO] bit_common: [step 66 (3/4)]: loss=6.67978 (lr=3.3e-05)
-2025-05-21 11:21:46,215 [INFO] bit_common: [step 66 (4/4)]: loss=6.95234 (lr=3.3e-05)
-2025-05-21 11:21:50,817 [INFO] bit_common: [step 67 (1/4)]: loss=6.88837 (lr=3.4e-05)
-2025-05-21 11:21:55,316 [INFO] bit_common: [step 67 (2/4)]: loss=6.95217 (lr=3.4e-05)
-2025-05-21 11:22:00,312 [INFO] bit_common: [step 67 (3/4)]: loss=6.94695 (lr=3.4e-05)
-2025-05-21 11:22:05,217 [INFO] bit_common: [step 67 (4/4)]: loss=6.95045 (lr=3.4e-05)
-2025-05-21 11:22:10,115 [INFO] bit_common: [step 68 (1/4)]: loss=6.95138 (lr=3.4e-05)
-2025-05-21 11:22:15,014 [INFO] bit_common: [step 68 (2/4)]: loss=6.57519 (lr=3.4e-05)
-2025-05-21 11:22:19,918 [INFO] bit_common: [step 68 (3/4)]: loss=6.95309 (lr=3.4e-05)
-2025-05-21 11:22:24,815 [INFO] bit_common: [step 68 (4/4)]: loss=6.95555 (lr=3.4e-05)
-2025-05-21 11:22:29,614 [INFO] bit_common: [step 69 (1/4)]: loss=6.95484 (lr=3.5e-05)
-2025-05-21 11:22:34,717 [INFO] bit_common: [step 69 (2/4)]: loss=6.96290 (lr=3.5e-05)
-2025-05-21 11:22:39,617 [INFO] bit_common: [step 69 (3/4)]: loss=6.95903 (lr=3.5e-05)
-2025-05-21 11:22:44,615 [INFO] bit_common: [step 69 (4/4)]: loss=6.76804 (lr=3.5e-05)
-2025-05-21 11:22:49,616 [INFO] bit_common: [step 70 (1/4)]: loss=6.95586 (lr=3.5e-05)
-2025-05-21 11:22:54,618 [INFO] bit_common: [step 70 (2/4)]: loss=6.95347 (lr=3.5e-05)
-2025-05-21 11:22:59,526 [INFO] bit_common: [step 70 (3/4)]: loss=6.95906 (lr=3.5e-05)
-2025-05-21 11:23:04,117 [INFO] bit_common: [step 70 (4/4)]: loss=6.95934 (lr=3.5e-05)
-2025-05-21 11:23:08,613 [INFO] bit_common: [step 71 (1/4)]: loss=6.95471 (lr=3.6e-05)
-2025-05-21 11:23:13,419 [INFO] bit_common: [step 71 (2/4)]: loss=6.95675 (lr=3.6e-05)
-2025-05-21 11:23:18,017 [INFO] bit_common: [step 71 (3/4)]: loss=6.95842 (lr=3.6e-05)
-2025-05-21 11:23:22,122 [INFO] bit_common: [step 71 (4/4)]: loss=6.63153 (lr=3.6e-05)
-2025-05-21 11:23:26,614 [INFO] bit_common: [step 72 (1/4)]: loss=6.96248 (lr=3.6e-05)
-2025-05-21 11:23:31,215 [INFO] bit_common: [step 72 (2/4)]: loss=6.46398 (lr=3.6e-05)
-2025-05-21 11:23:35,716 [INFO] bit_common: [step 72 (3/4)]: loss=6.95939 (lr=3.6e-05)
-2025-05-21 11:23:40,414 [INFO] bit_common: [step 72 (4/4)]: loss=6.92097 (lr=3.6e-05)
-2025-05-21 11:23:44,817 [INFO] bit_common: [step 73 (1/4)]: loss=6.96165 (lr=3.6e-05)
-2025-05-21 11:23:49,417 [INFO] bit_common: [step 73 (2/4)]: loss=6.96293 (lr=3.6e-05)
-2025-05-21 11:23:53,815 [INFO] bit_common: [step 73 (3/4)]: loss=6.96221 (lr=3.6e-05)
-2025-05-21 11:23:58,819 [INFO] bit_common: [step 73 (4/4)]: loss=6.77162 (lr=3.6e-05)
-2025-05-21 11:24:03,814 [INFO] bit_common: [step 74 (1/4)]: loss=6.97213 (lr=3.7e-05)
-2025-05-21 11:24:08,521 [INFO] bit_common: [step 74 (2/4)]: loss=6.95823 (lr=3.7e-05)
-2025-05-21 11:24:13,428 [INFO] bit_common: [step 74 (3/4)]: loss=6.96472 (lr=3.7e-05)
-2025-05-21 11:24:18,327 [INFO] bit_common: [step 74 (4/4)]: loss=6.96496 (lr=3.7e-05)
-2025-05-21 11:24:23,314 [INFO] bit_common: [step 75 (1/4)]: loss=6.95703 (lr=3.7e-05)
-2025-05-21 11:24:28,520 [INFO] bit_common: [step 75 (2/4)]: loss=6.97107 (lr=3.7e-05)
-2025-05-21 11:24:33,824 [INFO] bit_common: [step 75 (3/4)]: loss=6.96949 (lr=3.7e-05)
-2025-05-21 11:24:38,716 [INFO] bit_common: [step 75 (4/4)]: loss=6.96506 (lr=3.7e-05)
-2025-05-21 11:24:43,527 [INFO] bit_common: [step 76 (1/4)]: loss=6.58258 (lr=3.8e-05)
-2025-05-21 11:24:48,415 [INFO] bit_common: [step 76 (2/4)]: loss=6.42066 (lr=3.8e-05)
-2025-05-21 11:24:53,319 [INFO] bit_common: [step 76 (3/4)]: loss=6.96031 (lr=3.8e-05)
-2025-05-21 11:24:58,214 [INFO] bit_common: [step 76 (4/4)]: loss=6.96414 (lr=3.8e-05)
-2025-05-21 11:25:03,013 [INFO] bit_common: [step 77 (1/4)]: loss=6.96450 (lr=3.9e-05)
-2025-05-21 11:25:07,813 [INFO] bit_common: [step 77 (2/4)]: loss=6.96376 (lr=3.9e-05)
-2025-05-21 11:25:12,722 [INFO] bit_common: [step 77 (3/4)]: loss=6.76709 (lr=3.9e-05)
-2025-05-21 11:25:17,619 [INFO] bit_common: [step 77 (4/4)]: loss=6.69542 (lr=3.9e-05)
-2025-05-21 11:25:22,313 [INFO] bit_common: [step 78 (1/4)]: loss=6.97589 (lr=3.9e-05)
-2025-05-21 11:25:27,117 [INFO] bit_common: [step 78 (2/4)]: loss=6.97062 (lr=3.9e-05)
-2025-05-21 11:25:31,317 [INFO] bit_common: [step 78 (3/4)]: loss=6.97219 (lr=3.9e-05)
-2025-05-21 11:25:35,915 [INFO] bit_common: [step 78 (4/4)]: loss=6.96557 (lr=3.9e-05)
-2025-05-21 11:25:40,518 [INFO] bit_common: [step 79 (1/4)]: loss=6.96805 (lr=3.9e-05)
-2025-05-21 11:25:45,209 [INFO] bit_common: [step 79 (2/4)]: loss=6.97376 (lr=3.9e-05)
-2025-05-21 11:25:49,813 [INFO] bit_common: [step 79 (3/4)]: loss=6.97502 (lr=3.9e-05)
-2025-05-21 11:25:54,528 [INFO] bit_common: [step 79 (4/4)]: loss=6.53333 (lr=3.9e-05)
-2025-05-21 11:25:59,312 [INFO] bit_common: [step 80 (1/4)]: loss=6.97926 (lr=4.0e-05)
-2025-05-21 11:26:03,917 [INFO] bit_common: [step 80 (2/4)]: loss=6.97916 (lr=4.0e-05)
-2025-05-21 11:26:08,417 [INFO] bit_common: [step 80 (3/4)]: loss=6.97661 (lr=4.0e-05)
-2025-05-21 11:26:12,817 [INFO] bit_common: [step 80 (4/4)]: loss=6.96788 (lr=4.0e-05)
-2025-05-21 11:26:17,220 [INFO] bit_common: [step 81 (1/4)]: loss=6.98005 (lr=4.1e-05)
-2025-05-21 11:26:21,717 [INFO] bit_common: [step 81 (2/4)]: loss=6.69863 (lr=4.1e-05)
-2025-05-21 11:26:25,917 [INFO] bit_common: [step 81 (3/4)]: loss=6.97125 (lr=4.1e-05)
-2025-05-21 11:26:30,220 [INFO] bit_common: [step 81 (4/4)]: loss=6.97147 (lr=4.1e-05)
-2025-05-21 11:26:34,714 [INFO] bit_common: [step 82 (1/4)]: loss=6.97815 (lr=4.1e-05)
-2025-05-21 11:26:39,214 [INFO] bit_common: [step 82 (2/4)]: loss=6.97837 (lr=4.1e-05)
-2025-05-21 11:26:43,421 [INFO] bit_common: [step 82 (3/4)]: loss=6.53355 (lr=4.1e-05)
-2025-05-21 11:26:47,922 [INFO] bit_common: [step 82 (4/4)]: loss=6.95247 (lr=4.1e-05)
-2025-05-21 11:26:52,513 [INFO] bit_common: [step 83 (1/4)]: loss=6.97902 (lr=4.1e-05)
-2025-05-21 11:26:56,913 [INFO] bit_common: [step 83 (2/4)]: loss=6.98955 (lr=4.1e-05)
-2025-05-21 11:27:01,415 [INFO] bit_common: [step 83 (3/4)]: loss=6.98941 (lr=4.1e-05)
-2025-05-21 11:27:05,914 [INFO] bit_common: [step 83 (4/4)]: loss=6.97368 (lr=4.1e-05)
-2025-05-21 11:27:10,409 [INFO] bit_common: [step 84 (1/4)]: loss=6.37480 (lr=4.2e-05)
-2025-05-21 11:27:14,913 [INFO] bit_common: [step 84 (2/4)]: loss=6.97525 (lr=4.2e-05)
-2025-05-21 11:27:19,429 [INFO] bit_common: [step 84 (3/4)]: loss=6.98391 (lr=4.2e-05)
-2025-05-21 11:27:24,123 [INFO] bit_common: [step 84 (4/4)]: loss=6.98033 (lr=4.2e-05)
-2025-05-21 11:27:28,913 [INFO] bit_common: [step 85 (1/4)]: loss=6.61117 (lr=4.3e-05)
-2025-05-21 11:27:33,619 [INFO] bit_common: [step 85 (2/4)]: loss=6.98102 (lr=4.3e-05)
-2025-05-21 11:27:38,322 [INFO] bit_common: [step 85 (3/4)]: loss=6.95896 (lr=4.3e-05)
-2025-05-21 11:27:43,026 [INFO] bit_common: [step 85 (4/4)]: loss=6.97758 (lr=4.3e-05)
-2025-05-21 11:27:47,516 [INFO] bit_common: [step 86 (1/4)]: loss=6.36095 (lr=4.3e-05)
-2025-05-21 11:27:52,117 [INFO] bit_common: [step 86 (2/4)]: loss=6.98463 (lr=4.3e-05)
-2025-05-21 11:27:56,621 [INFO] bit_common: [step 86 (3/4)]: loss=6.87436 (lr=4.3e-05)
-2025-05-21 11:28:01,416 [INFO] bit_common: [step 86 (4/4)]: loss=6.98786 (lr=4.3e-05)
-2025-05-21 11:28:06,013 [INFO] bit_common: [step 87 (1/4)]: loss=6.98641 (lr=4.4e-05)
-2025-05-21 11:28:10,624 [INFO] bit_common: [step 87 (2/4)]: loss=6.50081 (lr=4.4e-05)
-2025-05-21 11:28:15,120 [INFO] bit_common: [step 87 (3/4)]: loss=6.98753 (lr=4.4e-05)
-2025-05-21 11:28:19,812 [INFO] bit_common: [step 87 (4/4)]: loss=6.98914 (lr=4.4e-05)
-2025-05-21 11:28:24,415 [INFO] bit_common: [step 88 (1/4)]: loss=6.99223 (lr=4.4e-05)
-2025-05-21 11:28:29,115 [INFO] bit_common: [step 88 (2/4)]: loss=6.98252 (lr=4.4e-05)
-2025-05-21 11:28:33,620 [INFO] bit_common: [step 88 (3/4)]: loss=6.98860 (lr=4.4e-05)
-2025-05-21 11:28:38,316 [INFO] bit_common: [step 88 (4/4)]: loss=6.83853 (lr=4.4e-05)
-2025-05-21 11:28:42,811 [INFO] bit_common: [step 89 (1/4)]: loss=6.60160 (lr=4.4e-05)
-2025-05-21 11:28:47,417 [INFO] bit_common: [step 89 (2/4)]: loss=6.99004 (lr=4.4e-05)
-2025-05-21 11:28:52,016 [INFO] bit_common: [step 89 (3/4)]: loss=6.25247 (lr=4.4e-05)
-2025-05-21 11:28:56,420 [INFO] bit_common: [step 89 (4/4)]: loss=6.99123 (lr=4.4e-05)
-2025-05-21 11:29:00,817 [INFO] bit_common: [step 90 (1/4)]: loss=6.99838 (lr=4.5e-05)
-2025-05-21 11:29:05,416 [INFO] bit_common: [step 90 (2/4)]: loss=7.00830 (lr=4.5e-05)
-2025-05-21 11:29:09,717 [INFO] bit_common: [step 90 (3/4)]: loss=6.99433 (lr=4.5e-05)
-2025-05-21 11:29:14,216 [INFO] bit_common: [step 90 (4/4)]: loss=6.99046 (lr=4.5e-05)
-2025-05-21 11:29:18,715 [INFO] bit_common: [step 91 (1/4)]: loss=7.00359 (lr=4.6e-05)
-2025-05-21 11:29:23,116 [INFO] bit_common: [step 91 (2/4)]: loss=6.99486 (lr=4.6e-05)
-2025-05-21 11:29:27,616 [INFO] bit_common: [step 91 (3/4)]: loss=6.99049 (lr=4.6e-05)
-2025-05-21 11:29:32,017 [INFO] bit_common: [step 91 (4/4)]: loss=6.81412 (lr=4.6e-05)
-2025-05-21 11:29:36,613 [INFO] bit_common: [step 92 (1/4)]: loss=6.87425 (lr=4.6e-05)
-2025-05-21 11:29:41,215 [INFO] bit_common: [step 92 (2/4)]: loss=7.00468 (lr=4.6e-05)
-2025-05-21 11:29:45,918 [INFO] bit_common: [step 92 (3/4)]: loss=6.55591 (lr=4.6e-05)
-2025-05-21 11:29:50,821 [INFO] bit_common: [step 92 (4/4)]: loss=6.99844 (lr=4.6e-05)
-2025-05-21 11:29:55,414 [INFO] bit_common: [step 93 (1/4)]: loss=6.67117 (lr=4.6e-05)
-2025-05-21 11:30:00,120 [INFO] bit_common: [step 93 (2/4)]: loss=6.99708 (lr=4.6e-05)
-2025-05-21 11:30:04,920 [INFO] bit_common: [step 93 (3/4)]: loss=6.99906 (lr=4.6e-05)
-2025-05-21 11:30:09,728 [INFO] bit_common: [step 93 (4/4)]: loss=6.40717 (lr=4.6e-05)
-2025-05-21 11:30:14,313 [INFO] bit_common: [step 94 (1/4)]: loss=7.01111 (lr=4.7e-05)
-2025-05-21 11:30:19,218 [INFO] bit_common: [step 94 (2/4)]: loss=6.99810 (lr=4.7e-05)
-2025-05-21 11:30:23,924 [INFO] bit_common: [step 94 (3/4)]: loss=6.76320 (lr=4.7e-05)
-2025-05-21 11:30:28,615 [INFO] bit_common: [step 94 (4/4)]: loss=6.58788 (lr=4.7e-05)
-2025-05-21 11:30:33,014 [INFO] bit_common: [step 95 (1/4)]: loss=7.00827 (lr=4.8e-05)
-2025-05-21 11:30:37,614 [INFO] bit_common: [step 95 (2/4)]: loss=6.65211 (lr=4.8e-05)
-2025-05-21 11:30:42,217 [INFO] bit_common: [step 95 (3/4)]: loss=7.01285 (lr=4.8e-05)
-2025-05-21 11:30:46,718 [INFO] bit_common: [step 95 (4/4)]: loss=6.85638 (lr=4.8e-05)
-2025-05-21 11:30:51,914 [INFO] bit_common: [step 96 (1/4)]: loss=6.56166 (lr=4.8e-05)
-2025-05-21 11:30:56,521 [INFO] bit_common: [step 96 (2/4)]: loss=6.70663 (lr=4.8e-05)
-2025-05-21 11:31:01,120 [INFO] bit_common: [step 96 (3/4)]: loss=7.01823 (lr=4.8e-05)
-2025-05-21 11:31:05,613 [INFO] bit_common: [step 96 (4/4)]: loss=7.00624 (lr=4.8e-05)
-2025-05-21 11:31:10,112 [INFO] bit_common: [step 97 (1/4)]: loss=6.46179 (lr=4.8e-05)
-2025-05-21 11:31:14,715 [INFO] bit_common: [step 97 (2/4)]: loss=5.64969 (lr=4.8e-05)
-2025-05-21 11:31:19,213 [INFO] bit_common: [step 97 (3/4)]: loss=6.70097 (lr=4.8e-05)
-2025-05-21 11:31:23,620 [INFO] bit_common: [step 97 (4/4)]: loss=6.53430 (lr=4.8e-05)
-2025-05-21 11:31:28,017 [INFO] bit_common: [step 98 (1/4)]: loss=6.47194 (lr=4.9e-05)
-2025-05-21 11:31:32,217 [INFO] bit_common: [step 98 (2/4)]: loss=7.03026 (lr=4.9e-05)
-2025-05-21 11:31:36,519 [INFO] bit_common: [step 98 (3/4)]: loss=7.01904 (lr=4.9e-05)
-2025-05-21 11:31:41,217 [INFO] bit_common: [step 98 (4/4)]: loss=7.02618 (lr=4.9e-05)
-2025-05-21 11:31:45,711 [INFO] bit_common: [step 99 (1/4)]: loss=6.66541 (lr=5.0e-05)
-2025-05-21 11:31:50,227 [INFO] bit_common: [step 99 (2/4)]: loss=7.02744 (lr=5.0e-05)
-2025-05-21 11:31:54,813 [INFO] bit_common: [step 99 (3/4)]: loss=6.39958 (lr=5.0e-05)
-2025-05-21 11:31:59,515 [INFO] bit_common: [step 99 (4/4)]: loss=6.25783 (lr=5.0e-05)
+2025-06-15 15:29:52,788 [INFO] bit_common: Fine-tuning from BiT
+2025-06-15 15:29:54,084 [INFO] bit_common: Starting training!
+TCAPPDLL 2025-06-15 15:30:00.321925 - Epoch: 0 Iteration: 1  rank : 0  train.loss : 6.907755374908447  train.ips : 0.16033614785575884 imgs/s
+TCAPPDLL 2025-06-15 15:30:05.318104 - Epoch: 1 Iteration: 6  rank : 0  train.loss : 6.907755374908447  train.ips : 0.2002146829402579 imgs/s
+TCAPPDLL 2025-06-15 15:30:09.818459 - Epoch: 2 Iteration: 11  rank : 0  train.loss : 6.907755374908447  train.ips : 0.22223140613220974 imgs/s
+TCAPPDLL 2025-06-15 15:30:14.527762 - Epoch: 3 Iteration: 16  rank : 0  train.loss : 6.907755374908447  train.ips : 0.21236884427519853 imgs/s
+TCAPPDLL 2025-06-15 15:30:19.314168 - Epoch: 4 Iteration: 17  rank : 0  train.loss : 6.9077558517456055  train.ips : 0.21011373322349167 imgs/s
+TCAPPDLL 2025-06-15 15:30:24.015477 - Epoch: 5 Iteration: 22  rank : 0  train.loss : 6.9077558517456055  train.ips : 0.2127451914778445 imgs/s
+TCAPPDLL 2025-06-15 15:30:29.017036 - Epoch: 6 Iteration: 27  rank : 0  train.loss : 6.9077558517456055  train.ips : 0.19997051673709149 imgs/s
+TCAPPDLL 2025-06-15 15:30:33.715658 - Epoch: 7 Iteration: 32  rank : 0  train.loss : 6.9077558517456055  train.ips : 0.21286289948295928 imgs/s
+TCAPPDLL 2025-06-15 15:30:38.518342 - Epoch: 8 Iteration: 33  rank : 0  train.loss : 6.907754898071289  train.ips : 0.20916499148988585 imgs/s
+TCAPPDLL 2025-06-15 15:30:43.723353 - Epoch: 9 Iteration: 38  rank : 0  train.loss : 6.907754898071289  train.ips : 0.19215758822229914 imgs/s
+TCAPPDLL 2025-06-15 15:30:48.811665 - Epoch: 10 Iteration: 43  rank : 0  train.loss : 6.907754898071289  train.ips : 0.19656476189503191 imgs/s
+TCAPPDLL 2025-06-15 15:30:53.621749 - Epoch: 11 Iteration: 48  rank : 0  train.loss : 6.907754898071289  train.ips : 0.20792835726542175 imgs/s
+TCAPPDLL 2025-06-15 15:30:58.612634 - Epoch: 12 Iteration: 49  rank : 0  train.loss : 6.907755374908447  train.ips : 0.20125482935796685 imgs/s
+TCAPPDLL 2025-06-15 15:31:03.329355 - Epoch: 13 Iteration: 54  rank : 0  train.loss : 6.9077558517456055  train.ips : 0.21204248287289562 imgs/s
+TCAPPDLL 2025-06-15 15:31:08.317668 - Epoch: 14 Iteration: 59  rank : 0  train.loss : 6.907755374908447  train.ips : 0.20049579197291964 imgs/s
+TCAPPDLL 2025-06-15 15:31:13.425670 - Epoch: 15 Iteration: 64  rank : 0  train.loss : 6.907754898071289  train.ips : 0.19585870579746445 imgs/s
+TCAPPDLL 2025-06-15 15:31:18.218001 - Epoch: 16 Iteration: 65  rank : 0  train.loss : 6.907756805419922  train.ips : 0.20961154708996402 imgs/s
+TCAPPDLL 2025-06-15 15:31:23.216272 - Epoch: 17 Iteration: 70  rank : 0  train.loss : 6.907756328582764  train.ips : 0.2000990117762185 imgs/s
+TCAPPDLL 2025-06-15 15:31:27.824603 - Epoch: 18 Iteration: 75  rank : 0  train.loss : 6.9077582359313965  train.ips : 0.21702346519028276 imgs/s
+TCAPPDLL 2025-06-15 15:31:32.922979 - Epoch: 19 Iteration: 80  rank : 0  train.loss : 6.907760143280029  train.ips : 0.1961655638960671 imgs/s
+TCAPPDLL 2025-06-15 15:31:38.128716 - Epoch: 20 Iteration: 81  rank : 0  train.loss : 6.907775402069092  train.ips : 0.19290501344672173 imgs/s
+TCAPPDLL 2025-06-15 15:31:42.919195 - Epoch: 21 Iteration: 86  rank : 0  train.loss : 6.907774925231934  train.ips : 0.2087774447901085 imgs/s
+TCAPPDLL 2025-06-15 15:31:48.024386 - Epoch: 22 Iteration: 91  rank : 0  train.loss : 6.907771110534668  train.ips : 0.1959045923172479 imgs/s
+TCAPPDLL 2025-06-15 15:31:53.019433 - Epoch: 23 Iteration: 96  rank : 0  train.loss : 6.907770156860352  train.ips : 0.20022755735406766 imgs/s
+TCAPPDLL 2025-06-15 15:31:58.115644 - Epoch: 24 Iteration: 97  rank : 0  train.loss : 6.907835006713867  train.ips : 0.19709512059053952 imgs/s
+TCAPPDLL 2025-06-15 15:32:03.016115 - Epoch: 25 Iteration: 102  rank : 0  train.loss : 6.901365756988525  train.ips : 0.20409560110483918 imgs/s
+TCAPPDLL 2025-06-15 15:32:08.021573 - Epoch: 26 Iteration: 107  rank : 0  train.loss : 6.907816410064697  train.ips : 0.19981017027699477 imgs/s
+TCAPPDLL 2025-06-15 15:32:13.317650 - Epoch: 27 Iteration: 112  rank : 0  train.loss : 6.907822608947754  train.ips : 0.18884833691559358 imgs/s
+TCAPPDLL 2025-06-15 15:32:18.526331 - Epoch: 28 Iteration: 113  rank : 0  train.loss : 6.907951831817627  train.ips : 0.19282697042789312 imgs/s
+TCAPPDLL 2025-06-15 15:32:23.416563 - Epoch: 29 Iteration: 118  rank : 0  train.loss : 6.907958030700684  train.ips : 0.20452694454503173 imgs/s
+TCAPPDLL 2025-06-15 15:32:27.920595 - Epoch: 30 Iteration: 123  rank : 0  train.loss : 6.907928943634033  train.ips : 0.2220660119353154 imgs/s
+TCAPPDLL 2025-06-15 15:32:33.021986 - Epoch: 31 Iteration: 128  rank : 0  train.loss : 6.907972812652588  train.ips : 0.1960526074696145 imgs/s
+TCAPPDLL 2025-06-15 15:32:38.112756 - Epoch: 32 Iteration: 129  rank : 0  train.loss : 6.908180236816406  train.ips : 0.19728298833184393 imgs/s
+TCAPPDLL 2025-06-15 15:32:42.919220 - Epoch: 33 Iteration: 134  rank : 0  train.loss : 6.9082207679748535  train.ips : 0.20808433899314124 imgs/s
+TCAPPDLL 2025-06-15 15:32:47.813809 - Epoch: 34 Iteration: 139  rank : 0  train.loss : 6.908203125  train.ips : 0.20434372879033919 imgs/s
+TCAPPDLL 2025-06-15 15:32:52.519749 - Epoch: 35 Iteration: 144  rank : 0  train.loss : 6.908247470855713  train.ips : 0.2125288589370243 imgs/s
+TCAPPDLL 2025-06-15 15:32:57.315741 - Epoch: 36 Iteration: 145  rank : 0  train.loss : 6.908712387084961  train.ips : 0.20946773481808592 imgs/s
+TCAPPDLL 2025-06-15 15:33:01.817887 - Epoch: 37 Iteration: 150  rank : 0  train.loss : 6.908495903015137  train.ips : 0.2221575677914154 imgs/s
+TCAPPDLL 2025-06-15 15:33:06.820529 - Epoch: 38 Iteration: 155  rank : 0  train.loss : 6.9085164070129395  train.ips : 0.1999137392317625 imgs/s
+TCAPPDLL 2025-06-15 15:33:11.921008 - Epoch: 39 Iteration: 160  rank : 0  train.loss : 6.908602714538574  train.ips : 0.19608190917390658 imgs/s
+TCAPPDLL 2025-06-15 15:33:16.713554 - Epoch: 40 Iteration: 161  rank : 0  train.loss : 6.817582130432129  train.ips : 0.20964525186171634 imgs/s
+TCAPPDLL 2025-06-15 15:33:21.321979 - Epoch: 41 Iteration: 166  rank : 0  train.loss : 6.909083843231201  train.ips : 0.21705031781801687 imgs/s
+TCAPPDLL 2025-06-15 15:33:26.419008 - Epoch: 42 Iteration: 171  rank : 0  train.loss : 6.909183979034424  train.ips : 0.1962299629763261 imgs/s
+TCAPPDLL 2025-06-15 15:33:31.119114 - Epoch: 43 Iteration: 176  rank : 0  train.loss : 6.909046649932861  train.ips : 0.2127943556050405 imgs/s
+TCAPPDLL 2025-06-15 15:33:36.316675 - Epoch: 44 Iteration: 177  rank : 0  train.loss : 6.90975284576416  train.ips : 0.19322345271548877 imgs/s
+TCAPPDLL 2025-06-15 15:33:41.317251 - Epoch: 45 Iteration: 182  rank : 0  train.loss : 6.909693241119385  train.ips : 0.2000253900331625 imgs/s
+TCAPPDLL 2025-06-15 15:33:46.110396 - Epoch: 46 Iteration: 187  rank : 0  train.loss : 6.908654689788818  train.ips : 0.2086626118874643 imgs/s
+TCAPPDLL 2025-06-15 15:33:51.219886 - Epoch: 47 Iteration: 192  rank : 0  train.loss : 6.90960168838501  train.ips : 0.19573931503672062 imgs/s
+TCAPPDLL 2025-06-15 15:33:56.117292 - Epoch: 48 Iteration: 193  rank : 0  train.loss : 6.9105634689331055  train.ips : 0.20512359047661713 imgs/s
+TCAPPDLL 2025-06-15 15:34:00.818007 - Epoch: 49 Iteration: 198  rank : 0  train.loss : 6.91013765335083  train.ips : 0.21276546960185305 imgs/s
+TCAPPDLL 2025-06-15 15:34:05.819387 - Epoch: 50 Iteration: 203  rank : 0  train.loss : 6.9106550216674805  train.ips : 0.19997382506609887 imgs/s
+TCAPPDLL 2025-06-15 15:34:10.920929 - Epoch: 51 Iteration: 208  rank : 0  train.loss : 6.910029411315918  train.ips : 0.196049546739564 imgs/s
+TCAPPDLL 2025-06-15 15:34:15.816550 - Epoch: 52 Iteration: 209  rank : 0  train.loss : 6.911377429962158  train.ips : 0.20517696257670281 imgs/s
+TCAPPDLL 2025-06-15 15:34:20.820963 - Epoch: 53 Iteration: 214  rank : 0  train.loss : 6.9112443923950195  train.ips : 0.19985404183841718 imgs/s
+TCAPPDLL 2025-06-15 15:34:25.716332 - Epoch: 54 Iteration: 219  rank : 0  train.loss : 6.911079406738281  train.ips : 0.2042979537394629 imgs/s
+TCAPPDLL 2025-06-15 15:34:30.114381 - Epoch: 55 Iteration: 224  rank : 0  train.loss : 6.911271095275879  train.ips : 0.22740045147157656 imgs/s
+2025-06-15 15:38:03,742 [INFO] bit_common: Running validation...
+TCAPPDLL 2025-06-15 15:34:34.911839 - Epoch: 56 Iteration: 225  rank : 0  train.loss : 6.912011623382568  train.ips : 0.2094024365208125 imgs/s
+TCAPPDLL 2025-06-15 15:34:39.717879 - Epoch: 57 Iteration: 230  rank : 0  train.loss : 6.912093162536621  train.ips : 0.20811276294225906 imgs/s
+TCAPPDLL 2025-06-15 15:34:44.416422 - Epoch: 58 Iteration: 235  rank : 0  train.loss : 6.912460803985596  train.ips : 0.2128562343071773 imgs/s
+TCAPPDLL 2025-06-15 15:34:49.319635 - Epoch: 59 Iteration: 240  rank : 0  train.loss : 6.912884712219238  train.ips : 0.2039713365665845 imgs/s
+TCAPPDLL 2025-06-15 15:34:54.212798 - Epoch: 60 Iteration: 241  rank : 0  train.loss : 6.913761138916016  train.ips : 0.20527658648115263 imgs/s
+TCAPPDLL 2025-06-15 15:34:58.720719 - Epoch: 61 Iteration: 246  rank : 0  train.loss : 6.914226531982422  train.ips : 0.22186532153593308 imgs/s
+TCAPPDLL 2025-06-15 15:35:03.715470 - Epoch: 62 Iteration: 251  rank : 0  train.loss : 6.913146495819092  train.ips : 0.20023486028162038 imgs/s
+TCAPPDLL 2025-06-15 15:35:08.421985 - Epoch: 63 Iteration: 256  rank : 0  train.loss : 6.913355350494385  train.ips : 0.2124953510511754 imgs/s
+TCAPPDLL 2025-06-15 15:35:13.323787 - Epoch: 64 Iteration: 257  rank : 0  train.loss : 6.913838863372803  train.ips : 0.2049230739164635 imgs/s
+TCAPPDLL 2025-06-15 15:35:18.421276 - Epoch: 65 Iteration: 262  rank : 0  train.loss : 6.915543556213379  train.ips : 0.19620309505959085 imgs/s
+TCAPPDLL 2025-06-15 15:35:23.424174 - Epoch: 66 Iteration: 267  rank : 0  train.loss : 6.914795875549316  train.ips : 0.1999109664713458 imgs/s
+TCAPPDLL 2025-06-15 15:35:28.115961 - Epoch: 67 Iteration: 272  rank : 0  train.loss : 6.915488243103027  train.ips : 0.21316570256920256 imgs/s
+TCAPPDLL 2025-06-15 15:35:32.816116 - Epoch: 68 Iteration: 273  rank : 0  train.loss : 6.916980743408203  train.ips : 0.2137661868114803 imgs/s
+TCAPPDLL 2025-06-15 15:35:37.624856 - Epoch: 69 Iteration: 278  rank : 0  train.loss : 6.751368522644043  train.ips : 0.20798235342596091 imgs/s
+TCAPPDLL 2025-06-15 15:35:42.522986 - Epoch: 70 Iteration: 283  rank : 0  train.loss : 6.916787147521973  train.ips : 0.20418875975126607 imgs/s
+TCAPPDLL 2025-06-15 15:35:47.619762 - Epoch: 71 Iteration: 288  rank : 0  train.loss : 6.8239898681640625  train.ips : 0.1962318174736587 imgs/s
+TCAPPDLL 2025-06-15 15:35:52.511851 - Epoch: 72 Iteration: 289  rank : 0  train.loss : 6.918362140655518  train.ips : 0.20533389821356302 imgs/s
+TCAPPDLL 2025-06-15 15:35:57.025642 - Epoch: 73 Iteration: 294  rank : 0  train.loss : 6.918278217315674  train.ips : 0.22156988689397117 imgs/s
+TCAPPDLL 2025-06-15 15:36:01.613150 - Epoch: 74 Iteration: 299  rank : 0  train.loss : 6.917726993560791  train.ips : 0.21800645416580192 imgs/s
+TCAPPDLL 2025-06-15 15:36:06.117594 - Epoch: 75 Iteration: 304  rank : 0  train.loss : 6.9177021980285645  train.ips : 0.22201994498708524 imgs/s
+TCAPPDLL 2025-06-15 15:36:10.912984 - Epoch: 76 Iteration: 305  rank : 0  train.loss : 6.918420314788818  train.ips : 0.2094628914740749 imgs/s
+TCAPPDLL 2025-06-15 15:36:15.519357 - Epoch: 77 Iteration: 310  rank : 0  train.loss : 6.919050693511963  train.ips : 0.21710845950402854 imgs/s
+TCAPPDLL 2025-06-15 15:36:20.619642 - Epoch: 78 Iteration: 315  rank : 0  train.loss : 6.919345378875732  train.ips : 0.19609518351921207 imgs/s
+TCAPPDLL 2025-06-15 15:36:25.220543 - Epoch: 79 Iteration: 320  rank : 0  train.loss : 6.919393539428711  train.ips : 0.21739744977168962 imgs/s
+TCAPPDLL 2025-06-15 15:36:30.116620 - Epoch: 80 Iteration: 321  rank : 0  train.loss : 6.922162055969238  train.ips : 0.2051828443374349 imgs/s
+TCAPPDLL 2025-06-15 15:36:34.920769 - Epoch: 81 Iteration: 326  rank : 0  train.loss : 6.919065952301025  train.ips : 0.20818632129368345 imgs/s
+TCAPPDLL 2025-06-15 15:36:40.114814 - Epoch: 82 Iteration: 331  rank : 0  train.loss : 6.92230749130249  train.ips : 0.19255795854510188 imgs/s
+TCAPPDLL 2025-06-15 15:36:44.718813 - Epoch: 83 Iteration: 336  rank : 0  train.loss : 6.922648906707764  train.ips : 0.2172347819781745 imgs/s
+TCAPPDLL 2025-06-15 15:36:49.716026 - Epoch: 84 Iteration: 337  rank : 0  train.loss : 6.921748161315918  train.ips : 0.20099492464698213 imgs/s
+TCAPPDLL 2025-06-15 15:36:54.714767 - Epoch: 85 Iteration: 342  rank : 0  train.loss : 6.922999382019043  train.ips : 0.2000793008398333 imgs/s
+TCAPPDLL 2025-06-15 15:36:59.618102 - Epoch: 86 Iteration: 347  rank : 0  train.loss : 6.924110412597656  train.ips : 0.2039706124646676 imgs/s
+TCAPPDLL 2025-06-15 15:37:04.919182 - Epoch: 87 Iteration: 352  rank : 0  train.loss : 6.924183368682861  train.ips : 0.18866643147296555 imgs/s
+TCAPPDLL 2025-06-15 15:37:09.916283 - Epoch: 88 Iteration: 353  rank : 0  train.loss : 6.927297115325928  train.ips : 0.20098553401972696 imgs/s
+TCAPPDLL 2025-06-15 15:37:14.831642 - Epoch: 89 Iteration: 358  rank : 0  train.loss : 6.926201820373535  train.ips : 0.20347285624331146 imgs/s
+TCAPPDLL 2025-06-15 15:37:19.913993 - Epoch: 90 Iteration: 363  rank : 0  train.loss : 6.923611640930176  train.ips : 0.19678835960639737 imgs/s
+TCAPPDLL 2025-06-15 15:37:24.621898 - Epoch: 91 Iteration: 368  rank : 0  train.loss : 6.924746036529541  train.ips : 0.2124429354244091 imgs/s
+TCAPPDLL 2025-06-15 15:37:29.317942 - Epoch: 92 Iteration: 369  rank : 0  train.loss : 6.9278764724731445  train.ips : 0.21393306145299495 imgs/s
+TCAPPDLL 2025-06-15 15:37:34.317907 - Epoch: 93 Iteration: 374  rank : 0  train.loss : 6.925628185272217  train.ips : 0.20002322466621697 imgs/s
+TCAPPDLL 2025-06-15 15:37:39.324529 - Epoch: 94 Iteration: 379  rank : 0  train.loss : 6.579405784606934  train.ips : 0.1997603716054688 imgs/s
+TCAPPDLL 2025-06-15 15:37:44.121956 - Epoch: 95 Iteration: 384  rank : 0  train.loss : 6.59931755065918  train.ips : 0.20847527246946063 imgs/s
+TCAPPDLL 2025-06-15 15:37:49.019163 - Epoch: 96 Iteration: 385  rank : 0  train.loss : 6.52232027053833  train.ips : 0.2056319257245034 imgs/s
+TCAPPDLL 2025-06-15 15:37:53.821992 - Epoch: 97 Iteration: 390  rank : 0  train.loss : 6.9317626953125  train.ips : 0.2082463965160927 imgs/s
+TCAPPDLL 2025-06-15 15:37:58.719468 - Epoch: 98 Iteration: 395  rank : 0  train.loss : 6.630173683166504  train.ips : 0.20421141643119625 imgs/s
+TCAPPDLL 2025-06-15 15:38:03.719223 - Epoch: 99 Iteration: 400  rank : 0  train.loss : 6.931446552276611  train.ips : 0.20003886024077516 imgs/s
+Traceback (most recent call last):
+  File "/root/miniconda3/envs/torch_env_py310/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/root/miniconda3/envs/torch_env_py310/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/data/bupt-data/lzw/BiT/train.py", line 330, in <module>
+    main(parser.parse_args())
+  File "/data/bupt-data/lzw/BiT/train.py", line 307, in main
+    run_eval(model, valid_loader, device, chrono, logger, step)
+  File "/data/bupt-data/lzw/BiT/train.py", line 145, in run_eval
+    top1, top5 = topk(logits, y, ks=(1, 5))
+  File "/data/bupt-data/lzw/BiT/train.py", line 55, in topk
+    return [correct[:k].max(0)[0] for k in ks]
+  File "/data/bupt-data/lzw/BiT/train.py", line 55, in <listcomp>
+    return [correct[:k].max(0)[0] for k in ks]
+RuntimeError: "argmax_cpu" not implemented for 'Bool'
+test1...
+Command failed with exit code: 1
