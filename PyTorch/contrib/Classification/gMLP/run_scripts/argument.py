@@ -29,7 +29,7 @@ import argparse
 def parse_args():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--data_path', type=str, default='/data/teco-data/imagenet', help='Path to ImageNet dataset')
+    parser.add_argument('--data_path', type=str, default='/data/teco-data/cifar10', help='Path to ImageNet dataset')
     parser.add_argument('--batch_size', type=int, default=64, help='Batch size')
     parser.add_argument('--epochs', type=int, default=100, help='Number of training epochs')
     parser.add_argument('--lr', type=float, default=3e-4, help='Initial learning rate')
