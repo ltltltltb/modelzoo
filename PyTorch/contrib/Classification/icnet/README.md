@@ -51,7 +51,7 @@
 
 2. 运行训练。该模型支持单机单卡。
     ```
-python run_icnet.py --config ../configs/icnet/icnet_r50-d8_4xb2-80k_cityscapes-832x832.py \
+    python run_icnet.py --config ../configs/icnet/icnet_r50-d8_4xb2-80k_cityscapes-832x832.py \
        --launcher pytorch --nproc-per-node 1 --amp 2>&1 | tee sdaa.log
    ```
     更多训练参数参考 run_scripts/argument.py
