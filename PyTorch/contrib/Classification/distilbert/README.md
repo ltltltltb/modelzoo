@@ -1,11 +1,11 @@
 
-# RoBERTa
+# Distilbert
 ## 1. 模型概述
-RoBERTa通过新的预训练目标改进了 BERT，证明了BERT训练不足，训练设计至关重要。预训练目标包括动态掩码、句子打包、更大的批次和字节级 BPE 分词器。
+DistilBERT 通过知识蒸馏进行预训练，以创建具有更快推理的更小模型，并且需要更少的计算来训练。通过预训练期间的三重损失目标、语言建模损失、蒸馏损失、余弦距离损失，DistilBERT 表现出与更大的 Transformer 语言模型相似的性能。
 
 
-- 论文链接：[1907.11692\]RoBERTa: A Robustly Optimized BERT Pretraining Approach(https://huggingface.co/papers/1907.11692)
-- 仓库链接：https://github.com/huggingface/transformers/blob/main/docs/source/en/model_doc/roberta.md
+- 论文链接：[1910.01108\]DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter(https://huggingface.co/papers/1910.01108)
+- 仓库链接：https://github.com/huggingface/transformers/blob/main/docs/source/en/model_doc/distilbert.md
 
 ## 2. 快速开始
 使用本模型执行训练的主要流程如下：
@@ -35,6 +35,9 @@ RoBERTa通过新的预训练目标改进了 BERT，证明了BERT训练不足，�
     ```
 2. 安装python依赖。
     ```
+    git clone https://gitee.com/xiwei777/tcap_dllogger.git
+    cd tcap_dllogger
+    python setup.py install
     cd .. 
     pip install -r requirements.txt
     pip3 install numpy==1.24.3
@@ -46,19 +49,19 @@ RoBERTa通过新的预训练目标改进了 BERT，证明了BERT训练不足，�
 
 1. 在构建好的环境中，进入训练脚本所在目录。
     ```
-    cd <ModelZoo_path>/PyTorch/contrib/Classification/roberta/run_scripts
+    cd <ModelZoo_path>/PyTorch/contrib/Classification/distilbert/run_scripts
     ```
 
 2. 运行训练。该模型支持单机单卡。
     ```
-    mkdir -p roberta_out && python run_roberta.py \
+    mkdir -p distilbert_out && python run_distilbert.py \
     --train_file ../configs/train_sample.txt \
     --do_train --do_eval \
-    --output_dir roberta_out \
+    --output_dir distilbert_out \
     --overwrite_output_dir \
     --per_device_train_batch_size 2 \
     --max_seq_length 32 \
-    --line_by_line  2>&1 | tee sdaa.log
+    --line_by_line   2>&1 | tee sdaa.log
    ```
     更多训练参数参考 run_scripts/argument.py
 
@@ -67,8 +70,8 @@ RoBERTa通过新的预训练目标改进了 BERT，证明了BERT训练不足，�
 
 ![loss](./run_scripts/loss.jpg)
 
-MeanRelativeError:6.0373152771700449
-MeanAbsoluteError:-0.0260575757575738
-Rule,mean_absolute_error 6.0373152771700449
-pass mean_relative_error=6.0373152771700449 <=0.05 or mean_absolute_error=-0.0260575757575738<=0.0002
+MeanRelativeError:0.890243939077245
+MeanAbsoluteError:-0.0401000000000002
+Rule,mean_absolute_error 0.890243939077245
+pass mean_relative_error=0.890243939077245 <=0.05 or mean_absolute_error=-0.0401000000000002<=0.0002
 
