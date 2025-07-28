@@ -15,10 +15,10 @@ cd $script_path
 
 #执行训练
 
-mkdir -p t5_out && python run_t5.py \
+mkdir -p xlnet_out && python run_xlnet.py \
 --train_file ../configs/train_sample.txt \
 --do_train --do_eval \
---output_dir t5_out \
+--output_dir xlnet_out \
 --overwrite_output_dir \
 --per_device_train_batch_size 2 \
 --max_seq_length 32 \

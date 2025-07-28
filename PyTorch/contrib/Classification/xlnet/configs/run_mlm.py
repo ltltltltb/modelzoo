@@ -7,7 +7,7 @@ import datasets
 from datasets import load_dataset
 import time
 import threading
-from transformers import T5Tokenizer, T5ForConditionalGeneration
+from transformers import XLNetTokenizer, XLNetConfig, XLNetLMHeadModel
 
 
 import transformers
@@ -139,27 +139,25 @@ def main():
     raw_datasets = load_dataset("text", data_files=data_files)
 
     # Set local paths
-    model_path = "/data/teco-data/models/mengzi-t5-base"  # 修改这里
+    model_path = "/data/teco-data/models/chinese-xlnet-base"  # 修改这里
     model_args.model_name_or_path = model_path
     model_args.config_name = os.path.join(model_path, "config.json")
     model_args.tokenizer_name = model_path  
 
     # Load tokenizer and model from local paths
-   
-    tokenizer = T5Tokenizer.from_pretrained(
-        model_args.tokenizer_name,
-        legacy=False,
+    tokenizer =  XLNetTokenizer.from_pretrained(
+        model_args.tokenizer_name,  # 使用正确的文件夹路径
         use_fast=True,
-        local_files_only=True
+        local_files_only=True  # 禁止联网
     )
-    config = AutoConfig.from_pretrained(
+    config = XLNetConfig.from_pretrained(
         model_args.config_name,  # 使用正确的配置文件路径
         local_files_only=True # 禁止联网
     )
     print("当前使用的模型路径：", model_args.model_name_or_path)
     assert os.path.exists(os.path.join(model_args.model_name_or_path, "pytorch_model.bin")), "模型参数文件未找到"
  
-    model = T5ForConditionalGeneration.from_pretrained(
+    model = XLNetLMHeadModel.from_pretrained(
         model_args.model_name_or_path,  # 使用模型文件夹路径
         config=config,
         local_files_only=True  # 禁止联网
