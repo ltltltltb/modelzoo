@@ -35,13 +35,16 @@ Transformer 具有学习长期依赖关系的潜力，但在语言建模设置�
     ```
 2. 安装python依赖。
     ```
+    cd .. 
+    pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+    pip3 install numpy==1.24.3
+    pip install huggingface_hub
+    pip install parameterized
+    cd $script_path
     git clone https://gitee.com/xiwei777/tcap_dllogger.git
     cd tcap_dllogger
     python setup.py install
-    cd ..
-    cd .. 
-    pip install -r requirements.txt
-    cd run_scripts   
+    cd ..  
 
     ```
 
@@ -54,7 +57,7 @@ Transformer 具有学习长期依赖关系的潜力，但在语言建模设置�
 
 2. 运行训练。该模型支持单机单卡。
     ```
-    python run_transformerxl.py --nproc-per-node 1 2>&1 | tee sdaa.log
+    python run_transformerxl.py 2>&1 | tee sdaa.log
 
    ```
     更多训练参数参考 run_scripts/argument.py
